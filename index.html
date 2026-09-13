@@ -1,0 +1,1177 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Трекер утренних тренировок, семейных завтраков и энергии на четыре недели.">
+<meta name="theme-color" content="#EEF1EC" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0E1512" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Минимальная доза">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2220%22%20fill%3D%22%2316211C%22%2F%3E%3Ctext%20x%3D%2250%22%20y%3D%2274%22%20text-anchor%3D%22middle%22%20font-size%3D%2264%22%20font-family%3D%22Helvetica%2CArial%2Csans-serif%22%20font-weight%3D%22bold%22%20fill%3D%22%23EEF1EC%22%3E8%3C%2Ftext%3E%3C%2Fsvg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2220%22%20fill%3D%22%2316211C%22%2F%3E%3Ctext%20x%3D%2250%22%20y%3D%2274%22%20text-anchor%3D%22middle%22%20font-size%3D%2264%22%20font-family%3D%22Helvetica%2CArial%2Csans-serif%22%20font-weight%3D%22bold%22%20fill%3D%22%23EEF1EC%22%3E8%3C%2Ftext%3E%3C%2Fsvg%3E">
+<style>
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0}
+  img{max-width:100%}
+  [hidden]{display:none!important}
+</style>
+<title>Минимальная доза</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Oswald:wght@500;600&family=Roboto+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --paper:#EEF1EC;
+    --surface:#FAFBF8;
+    --surface-2:#E4E9E2;
+    --ink:#16211C;
+    --ink-soft:#41514A;
+    --muted:#6E7F76;
+    --line:#D2D9CF;
+    --line-strong:#B6C1B3;
+    --accent:#0E6B58;
+    --accent-ink:#FFFFFF;
+    --accent-soft:#D3E5DD;
+    --signal:#A8501C;
+    --signal-soft:#F0DECF;
+    --focus:#0E6B58;
+
+    --f-display:"Oswald","Arial Narrow",system-ui,sans-serif;
+    --f-body:"Golos Text","Segoe UI",system-ui,sans-serif;
+    --f-mono:"Roboto Mono","SFMono-Regular",Consolas,monospace;
+
+    --r:10px;
+    --shadow:0 1px 0 rgba(22,33,28,.04), 0 6px 18px -12px rgba(22,33,28,.35);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#0E1512;
+      --surface:#161F1B;
+      --surface-2:#1E2A25;
+      --ink:#E7ECE6;
+      --ink-soft:#B2BFB8;
+      --muted:#82958C;
+      --line:#26332D;
+      --line-strong:#35443C;
+      --accent:#43AB8F;
+      --accent-ink:#06120E;
+      --accent-soft:#1C3A31;
+      --signal:#DE8F58;
+      --signal-soft:#3A2A1D;
+      --focus:#43AB8F;
+      --shadow:0 1px 0 rgba(0,0,0,.3), 0 8px 20px -14px rgba(0,0,0,.8);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#0E1512;
+    --surface:#161F1B;
+    --surface-2:#1E2A25;
+    --ink:#E7ECE6;
+    --ink-soft:#B2BFB8;
+    --muted:#82958C;
+    --line:#26332D;
+    --line-strong:#35443C;
+    --accent:#43AB8F;
+    --accent-ink:#06120E;
+    --accent-soft:#1C3A31;
+    --signal:#DE8F58;
+    --signal-soft:#3A2A1D;
+    --focus:#43AB8F;
+    --shadow:0 1px 0 rgba(0,0,0,.3), 0 8px 20px -14px rgba(0,0,0,.8);
+  }
+
+  *{box-sizing:border-box}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--f-body);
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{
+    max-width:56rem;
+    margin:0 auto;
+    padding-inline:20px;
+    padding-block:36px 72px;
+    display:flex;
+    flex-direction:column;
+    gap:40px;
+  }
+  h1,h2,h3{margin:0;text-wrap:balance;font-family:var(--f-display);font-weight:600;letter-spacing:.005em}
+  h1{font-size:clamp(2.1rem,7vw,3.1rem);line-height:1.02;text-transform:uppercase}
+  h2{font-size:clamp(1.25rem,3.6vw,1.6rem);line-height:1.1;text-transform:uppercase}
+  h3{font-size:1.02rem;line-height:1.25;font-family:var(--f-body);font-weight:700;letter-spacing:0}
+  p{margin:0}
+  ul{margin:0;padding-left:1.15em}
+  li{margin:0 0 .3em}
+  li:last-child{margin-bottom:0}
+  b,strong{font-weight:600;color:var(--ink)}
+  .eyebrow{
+    font-family:var(--f-mono);font-size:.7rem;letter-spacing:.13em;text-transform:uppercase;
+    color:var(--muted);
+  }
+  .lede{color:var(--ink-soft);max-width:62ch}
+  .prose{max-width:66ch;color:var(--ink-soft)}
+  .prose strong{color:var(--ink)}
+
+  /* ---------- header ---------- */
+  header.masthead{display:flex;flex-direction:column;gap:12px}
+  .rule-line{height:2px;background:var(--ink);opacity:.85}
+
+  /* ---------- today ---------- */
+  .today{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--r);
+    box-shadow:var(--shadow);
+    overflow:hidden;
+  }
+  .today-top{
+    display:flex;gap:18px;align-items:flex-start;
+    padding:20px 20px 16px;
+    border-bottom:1px solid var(--line);
+  }
+  .badge{
+    flex:none;width:66px;height:66px;border-radius:8px;
+    background:var(--ink);color:var(--paper);
+    display:grid;place-items:center;
+    font-family:var(--f-display);font-size:2.2rem;line-height:1;
+  }
+  .badge.rest{background:var(--surface-2);color:var(--muted);border:1px dashed var(--line-strong)}
+  .today-meta{display:flex;flex-direction:column;gap:3px;min-width:0}
+  .today-date{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .today-name{font-family:var(--f-display);font-size:1.45rem;line-height:1.05;text-transform:uppercase}
+  .today-note{font-size:.9rem;color:var(--ink-soft)}
+
+  .today-body{padding:16px 20px 20px;display:flex;flex-direction:column;gap:16px}
+  .dose{display:flex;flex-direction:column;gap:4px}
+  .dose-label{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--signal)}
+  .dose-label.norm{color:var(--muted)}
+  .dose-text{font-size:.93rem;color:var(--ink-soft)}
+
+  .marks{display:flex;flex-wrap:wrap;gap:8px}
+  .mark{
+    font:inherit;font-size:.88rem;font-weight:500;
+    padding:9px 14px;border-radius:999px;cursor:pointer;
+    border:1px solid var(--line-strong);
+    background:transparent;color:var(--ink-soft);
+    transition:background .12s ease,color .12s ease,border-color .12s ease;
+  }
+  .mark:hover{border-color:var(--ink-soft)}
+  .mark[aria-pressed="true"][data-lvl="min"]{background:var(--signal-soft);border-color:var(--signal);color:var(--signal);font-weight:600}
+  .mark[aria-pressed="true"][data-lvl="norm"],
+  .mark[aria-pressed="true"][data-lvl="plus"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+
+  .habits{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:14px}
+  .habit-row{display:flex;flex-wrap:wrap;gap:7px}
+  .chip{
+    font:inherit;font-size:.8rem;padding:6px 11px;border-radius:6px;cursor:pointer;
+    border:1px solid var(--line);background:var(--surface-2);color:var(--muted);
+    transition:background .12s ease,color .12s ease,border-color .12s ease;
+  }
+  .chip[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+  .chip[aria-pressed="true"]{font-weight:600}
+
+  /* ---------- stats ---------- */
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+  .stat{background:var(--surface);padding:14px 14px}
+  .stat-num{font-family:var(--f-display);font-size:1.9rem;line-height:1;font-variant-numeric:tabular-nums}
+  .stat-cap{font-family:var(--f-mono);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:5px}
+
+  /* ---------- grid ---------- */
+  .board{display:flex;flex-direction:column;gap:10px}
+  .grid{display:grid;grid-template-columns:2.1rem repeat(7,minmax(0,1fr));gap:5px;max-width:33rem}
+  .gh{
+    font-family:var(--f-mono);font-size:.65rem;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--muted);text-align:center;padding-bottom:2px;
+  }
+  .gh.corner{text-align:left}
+  .wk{
+    font-family:var(--f-mono);font-size:.68rem;color:var(--muted);
+    display:flex;align-items:center;justify-content:flex-start;
+  }
+  .cell{
+    aspect-ratio:1/1;max-width:100%;
+    border:1px solid var(--line);border-radius:7px;
+    background:var(--surface);color:var(--ink-soft);
+    font-family:var(--f-display);font-size:1.05rem;line-height:1;
+    display:grid;place-items:center;position:relative;
+    cursor:pointer;padding:0;
+    transition:background .12s ease,border-color .12s ease,color .12s ease;
+  }
+  .cell:hover{border-color:var(--line-strong)}
+  .cell .dnum{
+    position:absolute;top:4px;left:5px;
+    font-family:var(--f-mono);font-size:.53rem;color:var(--muted);
+  }
+  .cell.rest{background:transparent;border-style:dashed;color:var(--line-strong);cursor:default}
+  .cell.rest:hover{border-color:var(--line)}
+  .cell.today{outline:2px solid var(--ink);outline-offset:2px}
+  .cell.future{opacity:.55}
+  .cell.lvl-min{background:var(--signal-soft);border-color:var(--signal);color:var(--signal)}
+  .cell.lvl-norm,.cell.lvl-plus{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+  .cell.lvl-plus::after{
+    content:"+";position:absolute;bottom:1px;right:5px;
+    font-family:var(--f-mono);font-size:.6rem;opacity:.85;
+  }
+  .cell.missed{border-color:var(--line-strong);border-style:dotted;color:var(--line-strong);background:transparent}
+  .legend{display:flex;flex-wrap:wrap;gap:14px;font-size:.78rem;color:var(--muted)}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .sw{width:11px;height:11px;border-radius:3px;border:1px solid var(--line-strong);display:inline-block}
+  .sw.min{background:var(--signal-soft);border-color:var(--signal)}
+  .sw.norm{background:var(--accent);border-color:var(--accent)}
+  .sw.miss{border-style:dotted;background:transparent}
+
+  /* ---------- sections ---------- */
+  section{display:flex;flex-direction:column;gap:16px}
+  .sec-head{display:flex;flex-direction:column;gap:6px}
+
+  .numbered{display:flex;flex-direction:column;gap:14px;counter-reset:step}
+  .step{display:grid;grid-template-columns:2rem 1fr;gap:14px;align-items:start}
+  .step::before{
+    counter-increment:step;content:counter(step);
+    font-family:var(--f-display);font-size:1.15rem;line-height:1.15;
+    color:var(--accent);border-top:2px solid var(--accent);padding-top:4px;
+  }
+  .step-body{display:flex;flex-direction:column;gap:3px}
+  .step-body p{color:var(--ink-soft);font-size:.93rem}
+
+  .rules{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--line)}
+  .rule{display:flex;flex-direction:column;gap:3px;padding:14px 0;border-bottom:1px solid var(--line)}
+  .rule p{color:var(--ink-soft);font-size:.93rem;max-width:66ch}
+  .rule .tag{
+    font-family:var(--f-mono);font-size:.63rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+  }
+
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+  .card{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+    padding:14px 15px;display:flex;flex-direction:column;gap:10px;
+  }
+  .card-head{display:flex;align-items:baseline;gap:9px}
+  .card-letter{font-family:var(--f-display);font-size:1.35rem;line-height:1;color:var(--accent)}
+  .card-title{font-weight:600;font-size:.95rem}
+  .block{display:flex;flex-direction:column;gap:2px}
+  .block .k{font-family:var(--f-mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--signal)}
+  .block.n .k{color:var(--muted)}
+  .block .v{font-size:.87rem;color:var(--ink-soft);line-height:1.45}
+
+  .callout{
+    border-left:3px solid var(--accent);
+    background:var(--surface);
+    border-radius:0 var(--r) var(--r) 0;
+    padding:14px 16px;display:flex;flex-direction:column;gap:6px;
+  }
+  .callout .k{font-family:var(--f-mono);font-size:.63rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+  .callout p{font-size:.93rem;color:var(--ink-soft)}
+
+  table.macros{width:100%;border-collapse:collapse;font-size:.88rem}
+  .tablewrap{overflow-x:auto}
+  table.macros th,table.macros td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);color:var(--ink-soft)}
+  table.macros th{
+    font-family:var(--f-mono);font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--muted);font-weight:400;border-bottom-color:var(--line-strong);
+  }
+  table.macros td.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--ink)}
+
+  footer.foot{
+    border-top:2px solid var(--ink);padding-top:14px;
+    display:flex;flex-direction:column;gap:6px;
+  }
+  footer.foot p{font-size:.85rem;color:var(--muted);max-width:66ch}
+
+  button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+
+
+  /* ---------- nav ---------- */
+  html{scroll-behavior:smooth}
+  section{scroll-margin-top:14px}
+  .nav{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+  .nav a{
+    font-family:var(--f-mono);font-size:.67rem;letter-spacing:.07em;text-transform:uppercase;
+    text-decoration:none;color:var(--ink-soft);
+    border:1px solid var(--line);border-radius:999px;padding:5px 11px;background:var(--surface);
+    transition:border-color .12s ease,color .12s ease;
+  }
+  .nav a:hover{border-color:var(--accent);color:var(--accent)}
+
+  /* ---------- recipes ---------- */
+  .recipes{display:grid;grid-template-columns:repeat(auto-fit,minmax(265px,1fr));gap:12px}
+  .recipe{height:100%}
+  .recipe .card-head{justify-content:space-between;gap:10px;align-items:baseline}
+  .rtime{
+    font-family:var(--f-mono);font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--muted);white-space:nowrap;
+  }
+  .rfoot{
+    display:flex;flex-wrap:wrap;gap:9px;align-items:center;
+    margin-top:auto;padding-top:9px;border-top:1px solid var(--line);
+  }
+  .prot{
+    font-family:var(--f-mono);font-size:.71rem;font-weight:500;
+    color:var(--accent);background:var(--accent-soft);padding:3px 8px;border-radius:5px;
+    white-space:nowrap;
+  }
+  .rprep{font-size:.76rem;color:var(--muted)}
+
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+  }
+
+  @media (max-width:520px){
+    .today-top{gap:13px;padding:16px 15px 13px}
+    .badge{width:54px;height:54px;font-size:1.8rem}
+    .today-body{padding:14px 15px 16px}
+    .stats{grid-template-columns:1fr 1fr}
+    .stats .stat:last-child{grid-column:1/-1}
+    .grid{grid-template-columns:1.6rem repeat(7,minmax(0,1fr));gap:4px}
+    .cell{font-size:.88rem;border-radius:6px}
+    .step{grid-template-columns:1.5rem 1fr;gap:11px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important;animation:none!important}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="eyebrow">14 сентября — 11 октября 2026 · 4 недели · дома, без оборудования</div>
+    <h1>Минимальная доза</h1>
+    <div class="rule-line"></div>
+    <p class="lede">Программа у тебя уже есть, и она рабочая. Не хватает не воли — не хватает <strong>нижней границы</strong>: варианта, который ты сделаешь даже в плохой четверг. Здесь она задана для каждого дня, и она засчитывается наравне с полной тренировкой.</p>
+    <nav class="nav" aria-label="Разделы страницы">
+      <a href="#board">Четыре недели</a>
+      <a href="#why">Что ломается</a>
+      <a href="#rules">Пять правил</a>
+      <a href="#morning">Утро</a>
+      <a href="#doses">Минимумы</a>
+      <a href="#food">Питание</a>
+      <a href="#breakfast">Завтраки</a>
+      <a href="#sleep">Сон</a>
+      <a href="#energy">Энергия</a>
+      <a href="#measure">Что мерить</a>
+    </nav>
+  </header>
+
+  <!-- TODAY -->
+  <div class="today" id="today">
+    <div class="today-top">
+      <div class="badge" id="t-badge">A</div>
+      <div class="today-meta">
+        <div class="today-date" id="t-date">Понедельник, 14 сентября</div>
+        <div class="today-name" id="t-name">Силовая A</div>
+        <div class="today-note" id="t-note">Разминка 5–6 мин, затем 2 рабочих подхода.</div>
+      </div>
+    </div>
+    <div class="today-body">
+      <div class="dose">
+        <div class="dose-label">Минимум · 8 минут · этого достаточно</div>
+        <div class="dose-text" id="t-min">—</div>
+      </div>
+      <div class="dose">
+        <div class="dose-label norm">Норма</div>
+        <div class="dose-text" id="t-norm">—</div>
+      </div>
+      <div class="marks" id="t-marks">
+        <button class="mark" data-lvl="min" aria-pressed="false">Сделал минимум</button>
+        <button class="mark" data-lvl="norm" aria-pressed="false">Сделал норму</button>
+        <button class="mark" data-lvl="plus" aria-pressed="false">Сделал больше</button>
+      </div>
+      <div class="habits">
+        <div class="eyebrow">Утренняя цепочка — отметь, что было</div>
+        <div class="habit-row" id="t-habits">
+          <button class="chip" data-h="water" aria-pressed="false">Вода до кофе</button>
+          <button class="chip" data-h="teeth" aria-pressed="false">Зубы до кофе</button>
+          <button class="chip" data-h="table" aria-pressed="false">Завтрак за столом</button>
+          <button class="chip" data-h="protein" aria-pressed="false">Белок в завтраке</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat"><div class="stat-num" id="s-streak">0</div><div class="stat-cap">дней подряд без пропуска</div></div>
+    <div class="stat"><div class="stat-num" id="s-done">0/0</div><div class="stat-cap">выполнено из запланированных</div></div>
+    <div class="stat"><div class="stat-num" id="s-min">0</div><div class="stat-cap">спасено минимальной дозой</div></div>
+  </div>
+
+  <!-- BOARD -->
+  <section class="board" id="board">
+    <div class="sec-head">
+      <h2>Четыре недели</h2>
+      <p class="prose">Нажми на день, чтобы переключить: пусто → минимум → норма → больше. Воскресенье — отдых, его отмечать не нужно, это часть плана.</p>
+    </div>
+    <div class="grid" id="grid"></div>
+    <div class="legend">
+      <span><i class="sw min"></i> минимум</span>
+      <span><i class="sw norm"></i> норма и больше</span>
+      <span><i class="sw miss"></i> пропуск</span>
+      <span><i class="sw"></i> впереди</span>
+    </div>
+  </section>
+
+  <!-- DIAGNOSIS -->
+  <section id="why">
+    <div class="sec-head">
+      <h2>Что ломается на самом деле</h2>
+      <p class="prose">По тому, что ты описал, это четыре разные поломки, и чинятся они по-разному. «Мало мотивации» — не диагноз, это симптом.</p>
+    </div>
+    <div class="rules">
+      <div class="rule">
+        <div class="tag">Корень</div>
+        <h3>Не высыпаешься — значит, утро проиграно вечером</h3>
+        <p>Всё остальное вторично. Пока подъём даётся через силу, любая программа будет держаться на чистом усилии воли, а его хватает примерно до среды. Утро чинится не будильником, а временем отбоя.</p>
+      </div>
+      <div class="rule">
+        <div class="tag">Планка</div>
+        <h3>Ты избегаешь не нагрузки, а неизвестности</h3>
+        <p>«Мне будет тяжело» — это про то, что непонятно, сколько именно терпеть. Поставленный вслух таймер на 20 секунд убирает торг: ты не решаешь, когда закончить, за тебя решает таймер. Планка всегда идёт последней и всегда по таймеру.</p>
+      </div>
+      <div class="rule">
+        <div class="tag">Четверг и пятница</div>
+        <h3>Конец недели — не случайность, это закономерность</h3>
+        <p>К четвергу запас решимости исчерпан, и ты пропустил даже день восстановления — самый лёгкий в неделе. Вывод не «надо стараться сильнее», а «план должен быть рассчитан на уставшую версию тебя». Для этого и нужна минимальная доза.</p>
+      </div>
+      <div class="rule">
+        <div class="tag">Скучно и долго</div>
+        <h3>30–40 минут — это обещание, которое страшно давать</h3>
+        <p>Барьер входа слишком высокий. Если вход стоит 8 минут, ты почти всегда войдёшь — а войдя, в 3 случаях из 4 доделаешь нормальный объём, потому что тяжелее всего именно начать.</p>
+      </div>
+      <div class="rule">
+        <div class="tag">Никто не видит</div>
+        <h3>Без следа пропуск ничего не стоит</h3>
+        <p>Пропущенный день не оставляет следа, поэтому и не ощущается. Сетка выше — это след. Пустая клетка в середине ряда видна, и этого обычно достаточно.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- RULES -->
+  <section id="rules">
+    <div class="sec-head">
+      <h2>Пять правил на месяц</h2>
+      <p class="prose">Это единственное, что нужно удержать. Техника и объём — потом.</p>
+    </div>
+    <div class="rules">
+      <div class="rule">
+        <h3>1. Минимальная доза — это выполненный день</h3>
+        <p>Не «поблажка» и не половина. Это страховка от нуля. Восемь минут в плохой день сохраняют привычку; ноль её ломает. Галочка за минимум — настоящая галочка.</p>
+      </div>
+      <div class="rule">
+        <h3>2. Никогда не пропускай два дня подряд</h3>
+        <p>Один пропуск — случайность. Два подряд — уже новая привычка. Если пропустил вчера, сегодня делаешь хотя бы минимум, даже если он будет в обед, а не утром.</p>
+      </div>
+      <div class="rule">
+        <h3>3. Два подхода — это норма, а не провал</h3>
+        <p>На прошлой неделе ты делал 1–2 подхода вместо трёх и считал это срывом. Официально понижаю план: недели 1–2 — <strong>2 рабочих подхода</strong>, третий подход это бонус. С недели 3, если станет легко, добавляешь третий. Ты делал норму, просто она была написана неправильно.</p>
+      </div>
+      <div class="rule">
+        <h3>4. Всё неприятное — по таймеру</h3>
+        <p>Планка, боковая планка, растяжка. Ставишь время заранее, вслух, и не пересматриваешь по ходу. Вопрос «сколько ещё выдержу» — главный пожиратель желания тренироваться.</p>
+      </div>
+      <div class="rule">
+        <h3>5. Готовишь с вечера</h3>
+        <p>Коврик развёрнут, одежда лежит сверху, стакан воды налит. Каждое решение, принятое вечером, — это решение, которое не нужно принимать в 6 утра, когда решать нечем.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MORNING -->
+  <section id="morning">
+    <div class="sec-head">
+      <h2>Утренняя цепочка</h2>
+      <p class="prose">Порядок здесь важнее содержания: каждый шаг — это триггер следующего. Заодно чинится то, что тебя расстраивает — забытые зубы и завтрак у клавиатуры.</p>
+    </div>
+    <div class="numbered">
+      <div class="step"><div class="step-body">
+        <h3>Вода — 300–400 мл, сразу</h3>
+        <p>Стакан налит с вечера и стоит на виду. Это самое лёгкое действие дня, и оно нужно только затем, чтобы цепочка вообще началась.</p>
+      </div></div>
+      <div class="step"><div class="step-body">
+        <h3>Зубы — до кофе, а не после завтрака</h3>
+        <p>Здесь и решается проблема: после завтрака ты уже за компьютером и про зубы забываешь. Перед кофе ты ещё ни во что не вовлечён. Побочный эффект приятный — сладкое сразу после чистки уже не так тянет.</p>
+      </div></div>
+      <div class="step"><div class="step-body">
+        <h3>Тренировка — 8 или 35 минут, решаешь на коврике</h3>
+        <p>Решение принимается стоя на коврике, а не в кровати. Из кровати любая тренировка выглядит неподъёмной; с коврика минимум выглядит смешным — и ты его делаешь.</p>
+      </div></div>
+      <div class="step"><div class="step-body">
+        <h3>Кофеварку включаешь после, а не до</h3>
+        <p>Кофе становится наградой за сделанное, а не топливом для оттягивания. Если совсем не идёт — можно и до, но тогда обязательно после воды и зубов.</p>
+      </div></div>
+      <div class="step"><div class="step-body">
+        <h3>Завтрак — за столом, 10 минут, ноутбук закрыт</h3>
+        <p>Десять минут, не полчаса. Еда за рабочим экраном не ощущается едой: ты её не замечаешь, а через полтора часа хочется печенья. Это самый дешёвый способ повлиять на живот из всех, что тут написаны.</p>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- DOSES -->
+  <section id="doses">
+    <div class="sec-head">
+      <h2>Минимальные дозы</h2>
+      <p class="prose">Перед минимумом разминка сокращается до двух минут: ходьба на месте 60 сек, круги плечами 30 сек, 8 неглубоких приседаний. Перед нормой — общая разминка 5–6 минут, как в программе.</p>
+    </div>
+    <div class="cards" id="cards"></div>
+  </section>
+
+  <!-- FOOD -->
+  <section id="food">
+    <div class="sec-head">
+      <h2>Питание: четыре рычага</h2>
+      <p class="prose">Сразу про масштаб: при 170 см и 70 кг ты не в лишнем весе. Задача не «похудеть», а поменять состав тела и убрать провалы энергии. Это делается белком и регулярностью, а не дефицитом калорий — жёсткая диета здесь скорее навредит тренировкам.</p>
+    </div>
+    <div class="rules">
+      <div class="rule">
+        <div class="tag">Рычаг 1 — главный</div>
+        <h3>Белок: ориентир около 110 г в сутки</h3>
+        <p>Это примерно 1,6 г на килограмм веса — рабочий ориентир для того, кто начал силовые. Раскладывается на три приёма по 30–35 г. Больше ничего считать не нужно: если белок набирается, остальное обычно выравнивается само.</p>
+      </div>
+      <div class="rule">
+        <div class="tag">Рычаг 2</div>
+        <h3>Сырники — это не ошибка, ошибка — печенье</h3>
+        <p>Творог в сырниках даёт белок, так что как завтрак они вполне рабочие: добавь яйцо в тесто и не увлекайся сахаром и мукой. А вот 300 мл кофе с печеньем — это не завтрак, это отложенный голод: через полтора часа он вернётся, и обычно тоже в виде чего-то сладкого.</p>
+      </div>
+      <div class="rule">
+        <div class="tag">Рычаг 3</div>
+        <h3>Сладкое не отменяется — переносится</h3>
+        <p>Запрет продержится неделю и закончится срывом. Работает другое: сладкое <strong>после</strong> еды, а не вместо, один раз в день, и только за столом — не за клавиатурой. Печенье к каждой кружке кофе незаметно превращается в пять печений за день.</p>
+      </div>
+      <div class="rule">
+        <div class="tag">Рычаг 4</div>
+        <h3>Овощи в двух приёмах из трёх, вода 1,5–2 л</h3>
+        <p>Это про сытость и объём, а не про «очищение». Самый простой ход при сидячей работе — держать на столе воду, а не кофе: тогда рука тянется к воде по умолчанию.</p>
+      </div>
+      <div class="rule">
+        <div class="tag">Кофе</div>
+        <h3>300 мл — нормально. Важнее время, а не количество</h3>
+        <p>Кофеин выводится наполовину примерно за пять часов, так что чашка в 16:00 ещё работает в 21:00. Последний кофе — до 14:00. Это не про кофе, это снова про сон, то есть про корень всей проблемы.</p>
+      </div>
+    </div>
+    <div class="tablewrap">
+      <table class="macros">
+        <thead><tr><th>Продукт</th><th>Порция</th><th>Белок</th></tr></thead>
+        <tbody>
+          <tr><td>Творог 5%</td><td class="num">200 г</td><td class="num">≈ 34 г</td></tr>
+          <tr><td>Яйца</td><td class="num">3 шт.</td><td class="num">≈ 19 г</td></tr>
+          <tr><td>Куриная грудка</td><td class="num">150 г</td><td class="num">≈ 31 г</td></tr>
+          <tr><td>Рыба (треска, горбуша)</td><td class="num">150 г</td><td class="num">≈ 28 г</td></tr>
+          <tr><td>Греческий йогурт</td><td class="num">200 г</td><td class="num">≈ 18 г</td></tr>
+          <tr><td>Фасоль / чечевица варёная</td><td class="num">200 г</td><td class="num">≈ 16 г</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout">
+      <div class="k">Три завтрака, каждый до 10 минут</div>
+      <p><strong>Сырники:</strong> 200 г творога + 1 яйцо + 2 ст. л. муки, без сахара в тесте. <strong>Омлет:</strong> 3 яйца + помидор/шпинат + кусок хлеба. <strong>Быстрый:</strong> 200 г творога или греческого йогурта + ягоды + горсть орехов. Кофе — к любому из них, но после, а не вместо.</p>
+    </div>
+  </section>
+
+
+  <!-- BREAKFAST -->
+  <section id="breakfast">
+    <div class="sec-head">
+      <h2>Завтраки на всю семью</h2>
+      <p class="prose">Ты уже готовишь детям — значит, отдельный «правильный завтрак» себе готовить не нужно, это лишний повод не готовить вовсе. Готовишь одно на всех, а свою порцию правишь одним и тем же движением: <strong>больше творога или яиц, меньше сахара, сверху йогурт вместо варенья.</strong> Белок указан для твоей порции.</p>
+    </div>
+    <div class="recipes">
+
+      <div class="card recipe">
+        <div class="card-head"><span class="card-title">Сырники на всех</span><span class="rtime">15 мин</span></div>
+        <div class="block n"><span class="k">Состав</span><span class="v">500 г творога 5–9%, 2 яйца, 4 ст. л. муки (или 3 ст. л. манки), щепотка соли.</span></div>
+        <div class="block n"><span class="k">Как</span><span class="v">Замесить, лепить мокрыми руками, жарить по 3 мин с каждой стороны на среднем огне. Детям — мёд или сметана уже в тарелке, тебе — греческий йогурт. Сахар в тесто не добавляй вообще: он нужен только сверху и только детям.</span></div>
+        <div class="rfoot"><span class="prot">≈ 26 г белка</span><span class="rprep">Тесто можно замесить с вечера — утром 7 минут</span></div>
+      </div>
+
+      <div class="card recipe">
+        <div class="card-head"><span class="card-title">Омлет с творогом</span><span class="rtime">6 мин</span></div>
+        <div class="block n"><span class="k">Состав</span><span class="v">3 яйца, 60 г творога, 2 ст. л. молока, соль.</span></div>
+        <div class="block n"><span class="k">Как</span><span class="v">Взбить всё вилкой до однородности, вылить на сковороду, накрыть крышкой, слабый огонь 4–5 минут. Творог в омлете не чувствуется совсем, а белка становится в полтора раза больше. Детям — тот же омлет без творога, с тёртым сыром.</span></div>
+        <div class="rfoot"><span class="prot">≈ 29 г белка</span><span class="rprep">Самый быстрый вариант в списке</span></div>
+      </div>
+
+      <div class="card recipe">
+        <div class="card-head"><span class="card-title">Яичные маффины</span><span class="rtime">10 мин + духовка</span></div>
+        <div class="block n"><span class="k">Состав</span><span class="v">8 яиц, 100 мл молока, 100 г тёртого сыра, горсть мелко нарезанных овощей (помидор, шпинат, брокколи, перец), соль.</span></div>
+        <div class="block n"><span class="k">Как</span><span class="v">Всё смешать, разлить по формам для кексов, 180 °C, 20 минут. Хранятся в холодильнике 3 дня, утром — 40 секунд в микроволновке. Детям обычно нравятся больше обычного омлета, потому что это «кексики».</span></div>
+        <div class="rfoot"><span class="prot">≈ 21 г белка</span><span class="rprep">Печь в воскресенье — хватает на 3 утра</span></div>
+      </div>
+
+      <div class="card recipe">
+        <div class="card-head"><span class="card-title">Творожная запеканка</span><span class="rtime">10 мин + духовка</span></div>
+        <div class="block n"><span class="k">Состав</span><span class="v">600 г творога, 3 яйца, 3 ст. л. манки, 2 ст. л. сахара на всю форму, ваниль, горсть изюма.</span></div>
+        <div class="block n"><span class="k">Как</span><span class="v">Смешать, в форму, 180 °C, 35 минут. Утром — просто кусок из холодильника: детям с вареньем, тебе с йогуртом. Две ложки сахара на шесть порций — это мало, так что твоя порция от этого не портится.</span></div>
+        <div class="rfoot"><span class="prot">≈ 22 г белка</span><span class="rprep">Тоже в воскресенье, стоит 3 дня</span></div>
+      </div>
+
+      <div class="card recipe">
+        <div class="card-head"><span class="card-title">Овсянка, которая держит</span><span class="rtime">7 мин</span></div>
+        <div class="block n"><span class="k">Состав</span><span class="v">50 г хлопьев, 200 мл молока, 100 г творога, ягоды (можно замороженные).</span></div>
+        <div class="block n"><span class="k">Как</span><span class="v">Сварить кашу 5 минут, снять с огня и вмешать творог — он разойдётся и станет кремом. Без творога овсянка это почти чистые углеводы, и голод вернётся через полтора часа. Детям — та же каша с бананом.</span></div>
+        <div class="rfoot"><span class="prot">≈ 24 г белка</span><span class="rprep">Замороженные ягоды кидать прямо в горячую кашу</span></div>
+      </div>
+
+      <div class="card recipe">
+        <div class="card-head"><span class="card-title">Шакшука</span><span class="rtime">10 мин</span></div>
+        <div class="block n"><span class="k">Состав</span><span class="v">Банка резаных томатов 400 г (или 3 свежих), 4 яйца, 50 г сыра, зелень, хлеб.</span></div>
+        <div class="block n"><span class="k">Как</span><span class="v">Томаты на сковороду, 4 минуты. Сделать лунки, вбить яйца, накрыть крышкой на 5 минут — белок схватится, желток останется жидким. Посыпать сыром. Дети обычно включаются, потому что туда можно макать хлеб.</span></div>
+        <div class="rfoot"><span class="prot">≈ 26 г белка</span><span class="rprep">Вариант для выходных, когда не спешишь</span></div>
+      </div>
+
+      <div class="card recipe">
+        <div class="card-head"><span class="card-title">Ленивая овсянка в банке</span><span class="rtime">3 мин вечером</span></div>
+        <div class="block n"><span class="k">Состав</span><span class="v">40 г хлопьев, 150 г греческого йогурта, 100 мл молока, ягоды или банан.</span></div>
+        <div class="block n"><span class="k">Как</span><span class="v">Сложить всё в банку с вечера, закрыть, в холодильник. Утром достал и съел — готовить нечего. Это вариант для того утра, когда времени нет совсем, и он всё равно лучше кофе с печеньем.</span></div>
+        <div class="rfoot"><span class="prot">≈ 20 г белка</span><span class="rprep">Ставить сразу 2–3 банки на неделю</span></div>
+      </div>
+
+    </div>
+    <div class="callout">
+      <div class="k">Одно действие, которое экономит больше всего</div>
+      <p>Свари в воскресенье 10 яиц и поставь в холодильник. Два варёных яйца к любому завтраку — это <strong>+13 г белка за ноль минут готовки</strong>. Это самая дешёвая страховка на утро, когда всё пошло не по плану.</p>
+    </div>
+  </section>
+
+  <!-- SLEEP -->
+  <section id="sleep">
+    <div class="sec-head">
+      <h2>Сон: считать надо назад</h2>
+      <p class="prose">Один расчёт, который решает больше, чем вся остальная страница.</p>
+    </div>
+    <div class="rules">
+      <div class="rule">
+        <h3>Время подъёма минус 8 часов — это отбой, и он не обсуждается</h3>
+        <p>Встаёшь в 6:30 — свет выключен в 22:30. Не «лёг», а уже выключен. Ставь будильник на отбой, а не только на подъём: напоминание нужно вечером, когда ты ещё способен решать, а не утром, когда уже нет.</p>
+      </div>
+      <div class="rule">
+        <h3>Работа заканчивается за 30 минут до отбоя</h3>
+        <p>При 10–12 часах за компьютером мозг не переключается по щелчку. Ноутбук закрыт физически — это сигнал, который работает лучше любого намерения.</p>
+      </div>
+      <div class="rule">
+        <h3>Свет в первые 15 минут после подъёма</h3>
+        <p>В середине сентября в Екатеринбурге рассветает около семи, а к концу октября — ближе к восьми, так что естественного света утром почти не будет. Значит, включай весь свет в комнате сразу, а не сиди в полумраке с кофе: это ощутимо влияет на то, насколько тяжело встать завтра.</p>
+      </div>
+      <div class="rule">
+        <h3>Каждые 45–60 минут — встать на 2–3 минуты</h3>
+        <p>Это уже есть в программе, и это не мелочь: при сидячей работе эти перерывы дают дневной энергии больше, чем сама тренировка. Таймер на телефоне, а не «когда вспомню».</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ENERGY -->
+  <section id="energy">
+    <div class="sec-head">
+      <h2>Энергия и мотивация</h2>
+      <p class="prose">Сразу честно: 10–12 часов за компьютером — это и есть главный расход. Получасовая зарядка не компенсирует одиннадцать часов сидения, она делает так, что эти одиннадцать часов переносятся легче. Разницу важно понимать, иначе через месяц будет разочарование не по адресу.</p>
+    </div>
+    <div class="sec-head">
+      <h3>Что реально двигает энергию — по силе эффекта</h3>
+    </div>
+    <div class="rules">
+      <div class="rule">
+        <div class="tag">1 — сильнее всего</div>
+        <h3>Одинаковое время подъёма, включая выходные</h3>
+        <p>Разброс больше часа — это мини-перелёт через часовой пояс каждый понедельник. Стабильность подъёма влияет на самочувствие сильнее, чем количество сна: лучше стабильные 7 часов, чем 6 в будни и 10 в субботу.</p>
+      </div>
+      <div class="rule">
+        <div class="tag">2</div>
+        <h3>Свет в первые 15 минут</h3>
+        <p>К ноябрю в Екатеринбурге по утрам темно, так что рассчитывать на окно не получится. Включай весь свет в комнате на максимум сразу после подъёма, а не сиди в полумраке с кружкой. Это дешёвый и недооценённый рычаг.</p>
+      </div>
+      <div class="rule">
+        <div class="tag">3</div>
+        <h3>Прогулка 10–15 минут после обеда</h3>
+        <p>Против послеобеденной сонливости работает лучше кофе и заодно сглаживает сахар крови после еды. Если в дне можно добавить ровно одну вещь — добавь эту.</p>
+      </div>
+      <div class="rule">
+        <div class="tag">4</div>
+        <h3>Перерывы каждые 45–60 минут, по таймеру</h3>
+        <p>Не «когда вспомню» — вспоминаешь ты обычно через три часа. Два-три раза встать за час даёт дневной энергии больше, чем сама тренировка: тело не столько устаёт от нагрузки, сколько затекает от неподвижности.</p>
+      </div>
+      <div class="rule">
+        <div class="tag">5</div>
+        <h3>Белок утром вместо сахара</h3>
+        <p>Провал в районе 11 часов — это чаще всего не усталость, а откат от сладкого завтрака. Один этот пункт ты уже чинишь рецептами выше.</p>
+      </div>
+      <div class="rule">
+        <div class="tag">6</div>
+        <h3>Последний кофе до 14:00, алкоголь — отдельная история</h3>
+        <p>Кофеин наполовину выводится примерно за пять часов. Алкоголь вечером усыпляет, но рушит вторую половину ночи — это одна из самых частых причин «спал восемь часов и всё равно разбит».</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="k">Чего делать не надо</div>
+      <p>Не гнаться за добавками «для энергии»: при нормальном питании BCAA, жиросжигатели и комплексные витамины не дают ничего. Что действительно имеет смысл — сдать <strong>витамин D</strong> (на Урале зимой дефицит массовый) и <strong>ферритин с общим анализом крови</strong>, если усталость держится месяцами. Сначала анализ и врач, потом добавка, а не наоборот. И не добирай бодрость кофе после 15:00 — это долг, который вернётся ночью.</p>
+    </div>
+
+    <div class="sec-head">
+      <h3>Про мотивацию — без самообмана</h3>
+    </div>
+    <div class="rules">
+      <div class="rule">
+        <h3>Мотивация — это не топливо, а выхлоп</h3>
+        <p>Она появляется через две-три минуты после начала движения, а не до него. Ждать желания, чтобы начать, — значит ждать того, что приходит только после старта. Поэтому вопрос никогда не звучит «хочу ли я тренироваться»; он звучит «встал я на коврик или нет».</p>
+      </div>
+      <div class="rule">
+        <h3>Решай заранее, а не в шесть утра</h3>
+        <p>Формула «если — то»: «Если я проснулся и хочу отложить — то я не решаю, а иду на коврик и делаю 10 приседаний». Решение, принятое вчера, не требует воли сегодня. Воли утром у тебя нет, и это нормально — значит, на неё нельзя закладываться.</p>
+      </div>
+      <div class="rule">
+        <h3>Дети — твой самый сильный рычаг подотчётности</h3>
+        <p>Ты писал, что не хватает внешнего наблюдателя. Он у тебя есть, и он живёт с тобой. Делай зарядку при детях или позови их на пять минут: пропустить, когда на тебя смотрят, заметно труднее — а заодно это единственный работающий способ передать им привычку, потому что слова тут не работают вообще.</p>
+      </div>
+      <div class="rule">
+        <h3>Одно изменение за раз</h3>
+        <p>Сейчас ты меняешь две вещи: тренировки и время отбоя. Питание подключай со второй недели, всё остальное — с третьей. Список из десяти изменений выглядит как решимость, а работает как гарантированный откат к нулю через неделю.</p>
+      </div>
+      <div class="rule">
+        <h3>Граница рабочего дня — это не про дисциплину, это арифметика</h3>
+        <p>Чтобы вставать в 6:30 и спать восемь часов, ноутбук должен закрываться в 22:00. Если при 10–12 часах работы это невозможно, то честный вывод не «надо больше стараться утром», а «надо пересматривать рабочий день». Никакая зарядка это не вытянет, и делать вид, что вытянет, — самый быстрый способ бросить через месяц.</p>
+      </div>
+      <div class="rule">
+        <h3>Плохие дни разрешены. Два подряд — нет</h3>
+        <p>Ровно это правило отличает тех, кто держится год, от тех, кто держится три недели. Не идеальность, а скорость возвращения.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MEASURE -->
+  <section id="measure">
+    <div class="sec-head">
+      <h2>Что мерить — и чего не мерить</h2>
+      <p class="prose">Ежедневные измерения сжигают мотивацию: тело шумит сильнее, чем меняется, и ты видишь шум, а не прогресс.</p>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-head"><span class="card-letter">1</span><span class="card-title">Выполненные дни</span></div>
+        <div class="block n"><span class="k">Каждое воскресенье</span><span class="v">Главная метрика месяца. Цель первой недели — 5 из 6, и минимумы считаются. Всё остальное — следствие.</span></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-letter">2</span><span class="card-title">Талия</span></div>
+        <div class="block n"><span class="k">Раз в неделю</span><span class="v">На уровне пупка, утром натощак, до еды. При твоём весе это куда более честный показатель по животу, чем весы.</span></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-letter">3</span><span class="card-title">Вес</span></div>
+        <div class="block n"><span class="k">Раз в неделю, в тот же день</span><span class="v">Смотреть только на тренд за месяц. Колебание в 1–1,5 кг за сутки — это вода и еда, а не жир.</span></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-letter">4</span><span class="card-title">Отжимания</span></div>
+        <div class="block n"><span class="k">Раз в две недели</span><span class="v">Сколько получается без напряжения, оставляя 2 повтора в запасе. Сейчас это около 10 — через месяц будет видно, куда сдвинулось.</span></div>
+      </div>
+    </div>
+    <div class="callout">
+      <div class="k">Воскресный разбор — 5 минут</div>
+      <p>Три вопроса, и всё. Сколько дней из шести? Какой день сорвался и что было накануне вечером? Что я меняю на следующей неделе — ровно одну вещь? Больше одной за раз не меняем.</p>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <div class="eyebrow">Границы</div>
+    <p>Это не медицинская рекомендация. Резкая боль, онемение, покалывание, ощущение нестабильности в суставе — повод остановиться и показаться специалисту, а не «доработать через терпение». Хруст в плече без боли сам по себе не проблема, но специально его провоцировать не нужно.</p>
+    <p>Страницу можно открыть с любого устройства по ссылке, вход не нужен. Отметки хранятся в том браузере, где ты их поставил: <span id="sync">сохраняется в этом браузере</span>. Отмечай с одного устройства — с телефона, — а планшет и компьютер используй для чтения.</p>
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var START = new Date(2026, 8, 14); // Пн, 14 сентября 2026
+  var WEEKS = [
+    ["A","Л","Б","В","A","Д","О"],
+    ["Б","Л","A","В","Б","Д","О"],
+    ["A","Л","Б","В","A","Д","О"],
+    ["Б","Л","A","В","Б","Д","О"]
+  ];
+  var WD = ["Пн","Вт","Ср","Чт","Пт","Сб","Вс"];
+  var MONTHS = ["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"];
+  var DOW_FULL = ["Воскресенье","Понедельник","Вторник","Среда","Четверг","Пятница","Суббота"];
+
+  var DAY = {
+    "A": {
+      name: "Силовая A",
+      note: "Разминка 5–6 мин, затем 2–3 лёгких пробных повтора и рабочие подходы.",
+      min: "Приседания 1×10 · Отжимания 1×6 · Ягодичный мост 1×12 · Планка 1×20 сек по таймеру.",
+      norm: "Приседания 2×10–15 · Отжимания 2×6–10 · Подтягивания 2 подхода · Ягодичный мост 2×12–15 · Планка 2×20–30 сек."
+    },
+    "Б": {
+      name: "Силовая Б",
+      note: "Разминка 5–6 мин, затем 2–3 лёгких пробных повтора и рабочие подходы.",
+      min: "Обратные выпады 1×8 на ногу · Отжимания 1×6 · Bird Dog 1×8 на сторону · Боковая планка 1×15 сек на сторону.",
+      norm: "Обратные выпады 2×8–10 · Отжимания 2×6–10 · Подтягивания 2 подхода · Bird Dog 2×8 · Dead Bug 2×6–10 · Боковая планка 2×15–30 сек."
+    },
+    "Л": {
+      name: "Мобильность",
+      note: "Цель дня — стать подвижнее, а не устать.",
+      min: "Кошка-корова 1×8 · «Открытая книга» 1×8 на сторону · Грудь у дверного проёма 30 сек на сторону.",
+      norm: "Ходьба 10–15 мин · Кошка-корова 2×8 · «Открытая книга» 2×8 · Снежный ангел 2×6–8 · Сгибатель бедра 2×30 сек · Грудь у проёма 2×30 сек."
+    },
+    "В": {
+      name: "Восстановление",
+      note: "После него должно становиться легче, а не появляться ощущение тренировки.",
+      min: "5 минут спокойной ходьбы + кошка-корова 1×8. Всё.",
+      norm: "Ходьба 5 мин · Кошка-корова 2×8 · «Открытая книга» 2×8 · Снежный ангел 2×6–8 · Сгибатель бедра и грудь по 2×30 сек · Лёгкий мост 2×10 · Ходьба 5–10 мин."
+    },
+    "Д": {
+      name: "Прогулка или велосипед",
+      note: "Комфортный темп, превращать в кардио не нужно.",
+      min: "15 минут пешком. Можно по дороге куда угодно.",
+      norm: "30–60 минут прогулки или велосипеда в комфортном темпе."
+    },
+    "О": {
+      name: "Полный отдых",
+      note: "Это часть плана, а не пропуск.",
+      min: "Ничего делать не нужно.",
+      norm: "Ничего делать не нужно."
+    }
+  };
+
+  var LVL_NEXT = { "": "min", "min": "norm", "norm": "plus", "plus": "" };
+  var KEY = "min-doza-v1";
+  var state = { days: {} };
+
+  function iso(d){
+    var m = d.getMonth()+1, dd = d.getDate();
+    return d.getFullYear() + "-" + (m<10?"0":"") + m + "-" + (dd<10?"0":"") + dd;
+  }
+  function addDays(d, n){ var x = new Date(d.getTime()); x.setDate(x.getDate()+n); return x; }
+  function todayLocal(){ var n = new Date(); return new Date(n.getFullYear(), n.getMonth(), n.getDate()); }
+  function idxOfDate(d){ return Math.round((d - START) / 86400000); }
+
+  function loadLocal(){
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (raw) { var p = JSON.parse(raw); if (p && p.days) state.days = p.days; }
+    } catch(e){}
+  }
+  function saveLocal(){
+    try { localStorage.setItem(KEY, JSON.stringify({days: state.days})); } catch(e){}
+  }
+  var lastPushed = "";
+  function pushRemote(){
+    if (!REMOTE_URL) return;
+    var payload = JSON.stringify(state.days);
+    if (payload === lastPushed) return;
+    lastPushed = payload;
+    setSync("Сохраняю…");
+    fetch(REMOTE_URL, {
+      method: "PUT",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({ days: state.days, updatedAt: new Date().toISOString() })
+    }).then(function(r){
+      if (!r.ok) throw new Error("http");
+      setSync("Синхронизировано");
+    }).catch(function(){ lastPushed = ""; setSync("Нет связи — сохранено на устройстве"); });
+  }
+  function persist(){ saveLocal(); pushRemote(); }
+  function setSync(text){
+    var el = document.getElementById("sync");
+    if (el) el.textContent = text;
+  }
+  function stamp(e){ e.ts = Date.now(); }
+
+  function entry(key){
+    if (!state.days[key]) state.days[key] = { level: "", habits: {} };
+    if (!state.days[key].habits) state.days[key].habits = {};
+    return state.days[key];
+  }
+  function levelOf(key){
+    var e = state.days[key];
+    return (e && e.level) ? e.level : "";
+  }
+
+  // ---------- board ----------
+  var gridEl = document.getElementById("grid");
+
+  function buildGrid(){
+    gridEl.textContent = "";
+    var corner = document.createElement("div");
+    corner.className = "gh corner";
+    corner.textContent = "нед";
+    gridEl.appendChild(corner);
+    for (var i=0;i<7;i++){
+      var h = document.createElement("div");
+      h.className = "gh";
+      h.textContent = WD[i];
+      gridEl.appendChild(h);
+    }
+    for (var w=0; w<4; w++){
+      var lab = document.createElement("div");
+      lab.className = "wk";
+      lab.textContent = String(w+1);
+      gridEl.appendChild(lab);
+      for (var d=0; d<7; d++){
+        var n = w*7 + d;
+        var date = addDays(START, n);
+        var letter = WEEKS[w][d];
+        var btn = document.createElement("button");
+        btn.className = "cell";
+        btn.setAttribute("data-key", iso(date));
+        btn.setAttribute("data-letter", letter);
+        btn.setAttribute("data-idx", String(n));
+        var num = document.createElement("span");
+        num.className = "dnum";
+        num.textContent = String(date.getDate());
+        var big = document.createElement("span");
+        big.textContent = letter;
+        btn.appendChild(num);
+        btn.appendChild(big);
+        if (letter === "О"){
+          btn.classList.add("rest");
+          btn.disabled = true;
+          btn.setAttribute("aria-label", WD[d] + ", " + date.getDate() + " " + MONTHS[date.getMonth()] + " — полный отдых");
+        } else {
+          btn.addEventListener("click", onCellClick);
+        }
+        gridEl.appendChild(btn);
+      }
+    }
+  }
+
+  function onCellClick(ev){
+    var btn = ev.currentTarget;
+    var key = btn.getAttribute("data-key");
+    var e = entry(key);
+    e.level = LVL_NEXT[e.level || ""];
+    stamp(e);
+    persist();
+    render();
+  }
+
+  // ---------- cards ----------
+  function buildCards(){
+    var host = document.getElementById("cards");
+    var order = ["A","Б","Л","В","Д","О"];
+    for (var i=0;i<order.length;i++){
+      var L = order[i], info = DAY[L];
+      var card = document.createElement("div");
+      card.className = "card";
+
+      var head = document.createElement("div");
+      head.className = "card-head";
+      var letter = document.createElement("span");
+      letter.className = "card-letter";
+      letter.textContent = L;
+      var title = document.createElement("span");
+      title.className = "card-title";
+      title.textContent = info.name;
+      head.appendChild(letter); head.appendChild(title);
+      card.appendChild(head);
+
+      if (L !== "О"){
+        card.appendChild(block("Минимум", info.min, false));
+        card.appendChild(block("Норма", info.norm, true));
+      } else {
+        card.appendChild(block("Что делать", "Ничего. Отдых запланирован, и он не считается пропуском.", true));
+      }
+      host.appendChild(card);
+    }
+  }
+  function block(k, v, isNorm){
+    var b = document.createElement("div");
+    b.className = "block" + (isNorm ? " n" : "");
+    var ke = document.createElement("span"); ke.className = "k"; ke.textContent = k;
+    var ve = document.createElement("span"); ve.className = "v"; ve.textContent = v;
+    b.appendChild(ke); b.appendChild(ve);
+    return b;
+  }
+
+  // ---------- today ----------
+  function activeIndex(){
+    var i = idxOfDate(todayLocal());
+    if (i < 0) return 0;
+    if (i > 27) return 27;
+    return i;
+  }
+
+  function renderToday(){
+    var i = activeIndex();
+    var date = addDays(START, i);
+    var letter = WEEKS[Math.floor(i/7)][i%7];
+    var info = DAY[letter];
+    var key = iso(date);
+    var realIdx = idxOfDate(todayLocal());
+
+    var badge = document.getElementById("t-badge");
+    badge.textContent = letter;
+    badge.className = "badge" + (letter === "О" ? " rest" : "");
+
+    var prefix = "";
+    if (realIdx < 0) prefix = "Старт · ";
+    else if (realIdx > 27) prefix = "Последний день · ";
+    document.getElementById("t-date").textContent =
+      prefix + DOW_FULL[date.getDay()] + ", " + date.getDate() + " " + MONTHS[date.getMonth()];
+    document.getElementById("t-name").textContent = info.name;
+    document.getElementById("t-note").textContent = info.note;
+    document.getElementById("t-min").textContent = info.min;
+    document.getElementById("t-norm").textContent = info.norm;
+
+    var lvl = levelOf(key);
+    var marks = document.getElementById("t-marks").querySelectorAll(".mark");
+    for (var m=0;m<marks.length;m++){
+      var on = marks[m].getAttribute("data-lvl") === lvl;
+      marks[m].setAttribute("aria-pressed", on ? "true" : "false");
+      marks[m].disabled = (letter === "О");
+      marks[m].style.opacity = (letter === "О") ? "0.45" : "";
+    }
+    var e = state.days[key];
+    var chips = document.getElementById("t-habits").querySelectorAll(".chip");
+    for (var c=0;c<chips.length;c++){
+      var h = chips[c].getAttribute("data-h");
+      var onh = !!(e && e.habits && e.habits[h]);
+      chips[c].setAttribute("aria-pressed", onh ? "true" : "false");
+    }
+    document.getElementById("today").setAttribute("data-key", key);
+  }
+
+  function renderBoard(){
+    var today = todayLocal();
+    var tIdx = idxOfDate(today);
+    var cells = gridEl.querySelectorAll(".cell");
+    for (var i=0;i<cells.length;i++){
+      var cell = cells[i];
+      var n = parseInt(cell.getAttribute("data-idx"), 10);
+      var letter = cell.getAttribute("data-letter");
+      var key = cell.getAttribute("data-key");
+      cell.classList.remove("lvl-min","lvl-norm","lvl-plus","missed","future","today");
+      if (n === tIdx) cell.classList.add("today");
+      if (letter === "О") continue;
+      var lvl = levelOf(key);
+      if (lvl) cell.classList.add("lvl-" + lvl);
+      else if (n < tIdx) cell.classList.add("missed");
+      else if (n > tIdx) cell.classList.add("future");
+    }
+  }
+
+  function renderStats(){
+    var tIdx = idxOfDate(todayLocal());
+    var planned = 0, done = 0, mins = 0;
+    for (var n=0; n<28; n++){
+      var letter = WEEKS[Math.floor(n/7)][n%7];
+      if (letter === "О") continue;
+      var key = iso(addDays(START, n));
+      var lvl = levelOf(key);
+      if (n <= tIdx) planned++;
+      if (lvl) { done++; if (lvl === "min") mins++; }
+    }
+    if (planned < 0) planned = 0;
+
+    // серия: идём назад от сегодня, дни отдыха пропускаем насквозь
+    var streak = 0;
+    var start = Math.min(tIdx, 27);
+    if (start >= 0){
+      // если сегодня ещё не отмечено — начинаем со вчера
+      var todayLetter = WEEKS[Math.floor(start/7)][start%7];
+      var todayKey = iso(addDays(START, start));
+      if (todayLetter !== "О" && !levelOf(todayKey)) start--;
+      for (var k=start; k>=0; k--){
+        var L = WEEKS[Math.floor(k/7)][k%7];
+        if (L === "О") continue;
+        if (levelOf(iso(addDays(START, k)))) streak++;
+        else break;
+      }
+    }
+
+    document.getElementById("s-streak").textContent = String(streak);
+    document.getElementById("s-done").textContent = done + "/" + Math.max(planned, 0);
+    document.getElementById("s-min").textContent = String(mins);
+  }
+
+  function render(){ renderToday(); renderBoard(); renderStats(); }
+
+  // ---------- events ----------
+  document.getElementById("t-marks").addEventListener("click", function(ev){
+    var b = ev.target.closest ? ev.target.closest(".mark") : null;
+    if (!b || b.disabled) return;
+    var key = document.getElementById("today").getAttribute("data-key");
+    var e = entry(key);
+    var lvl = b.getAttribute("data-lvl");
+    e.level = (e.level === lvl) ? "" : lvl;
+    stamp(e);
+    persist();
+    render();
+  });
+
+  document.getElementById("t-habits").addEventListener("click", function(ev){
+    var b = ev.target.closest ? ev.target.closest(".chip") : null;
+    if (!b) return;
+    var key = document.getElementById("today").getAttribute("data-key");
+    var e = entry(key);
+    var h = b.getAttribute("data-h");
+    e.habits[h] = !e.habits[h];
+    stamp(e);
+    persist();
+    render();
+  });
+
+  // ---------- boot ----------
+  loadLocal();
+  buildGrid();
+  buildCards();
+  render();
+
+  // Хранилище отметок.
+  // REMOTE_URL пуст — отметки живут в браузере этого устройства.
+  // Если задать адрес JSON-хранилища, страница начнёт синхронизироваться
+  // между устройствами (работает только на внешнем хостинге: на claude.ai
+  // запросы наружу заблокированы политикой безопасности страницы).
+  var REMOTE_URL = "";
+
+  function has(o, k){ return Object.prototype.hasOwnProperty.call(o, k); }
+
+  // Слияние по времени изменения: побеждает та отметка, которую сделали позже.
+  function mergeRemote(remote){
+    var changed = false, pushUp = false, k;
+    if (remote){
+      for (k in remote){
+        if (!has(remote, k)) continue;
+        var r = remote[k], l = state.days[k];
+        var rt = (r && r.ts) || 0, lt = (l && l.ts) || 0;
+        if (!l || rt > lt){ state.days[k] = r; changed = true; }
+        else if (lt > rt){ pushUp = true; }
+      }
+    }
+    for (k in state.days){
+      if (!has(state.days, k)) continue;
+      if (!remote || !remote[k]) pushUp = true;
+    }
+    return { changed: changed, pushUp: pushUp };
+  }
+
+  if (REMOTE_URL){
+    setSync("Подключаюсь…");
+    fetch(REMOTE_URL, {cache:"no-store"})
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(data){
+        var res = mergeRemote(data && data.days ? data.days : null);
+        if (res.changed){ saveLocal(); render(); }
+        if (res.pushUp) pushRemote(); else setSync("Синхронизировано");
+      })
+      .catch(function(){ setSync("Нет связи — сохраняю на устройстве"); });
+    // подтягиваем изменения с других устройств при возврате на вкладку
+    document.addEventListener("visibilitychange", function(){
+      if (document.visibilityState !== "visible" || !REMOTE_URL) return;
+      fetch(REMOTE_URL, {cache:"no-store"})
+        .then(function(r){ return r.ok ? r.json() : null; })
+        .then(function(data){
+          var res = mergeRemote(data && data.days ? data.days : null);
+          if (res.changed){ saveLocal(); render(); }
+          if (res.pushUp) pushRemote();
+        })
+        .catch(function(){});
+    });
+  } else {
+    setSync("сохраняется в этом браузере");
+  }
+})();
+</script>
+</body>
+</html>
