@@ -287,17 +287,37 @@
   button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 
 
-  /* ---------- nav ---------- */
+  /* ---------- tabs ---------- */
   html{scroll-behavior:smooth}
-  section{scroll-margin-top:14px}
-  .nav{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
-  .nav a{
-    font-family:var(--f-mono);font-size:.67rem;letter-spacing:.07em;text-transform:uppercase;
-    text-decoration:none;color:var(--ink-soft);
-    border:1px solid var(--line);border-radius:999px;padding:5px 11px;background:var(--surface);
-    transition:border-color .12s ease,color .12s ease;
+  .wrap{gap:26px}
+  .tabs{
+    position:sticky;top:0;z-index:20;
+    display:flex;gap:6px;align-items:center;
+    overflow-x:auto;overscroll-behavior-x:contain;
+    background:var(--paper);
+    margin-inline:-20px;padding:11px 20px;
+    border-bottom:1px solid var(--line);
+    scrollbar-width:none;-ms-overflow-style:none;
   }
-  .nav a:hover{border-color:var(--accent);color:var(--accent)}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab-btn{
+    font:inherit;font-family:var(--f-display);font-weight:500;
+    font-size:.92rem;letter-spacing:.03em;text-transform:uppercase;
+    white-space:nowrap;cursor:pointer;flex:none;
+    border:1px solid var(--line-strong);border-radius:999px;
+    padding:7px 15px;background:var(--surface);color:var(--ink-soft);
+    transition:background .12s ease,color .12s ease,border-color .12s ease;
+  }
+  .tab-btn:hover{border-color:var(--ink-soft)}
+  .tab-btn[aria-selected="true"]{
+    background:var(--ink);border-color:var(--ink);color:var(--paper);
+  }
+  .tab-btn .dot{
+    display:inline-block;width:6px;height:6px;border-radius:50%;
+    background:var(--signal);margin-left:7px;vertical-align:middle;
+  }
+  .tab-btn[aria-selected="true"] .dot{background:var(--paper)}
+  .tabpanel{display:flex;flex-direction:column;gap:40px}
 
   /* ---------- recipes ---------- */
   .recipes{display:grid;grid-template-columns:repeat(auto-fit,minmax(265px,1fr));gap:12px}
@@ -331,6 +351,9 @@
     .grid{grid-template-columns:1.6rem repeat(7,minmax(0,1fr));gap:4px}
     .cell{font-size:.88rem;border-radius:6px}
     .step{grid-template-columns:1.5rem 1fr;gap:11px}
+    .tabs{gap:5px;padding:9px 20px}
+    .tab-btn{font-size:.85rem;padding:6px 13px}
+    .tabpanel{gap:32px}
   }
   @media (prefers-reduced-motion:reduce){
     *{transition:none!important;animation:none!important}
@@ -340,27 +363,25 @@
 <body>
 <div class="wrap">
 
+
   <header class="masthead">
     <div class="eyebrow">14 сентября — 11 октября 2026 · 4 недели · дома, без оборудования</div>
     <h1>Минимальная доза</h1>
     <div class="rule-line"></div>
-    <p class="lede">Программа у тебя уже есть, и она рабочая. Не хватает не воли — не хватает <strong>нижней границы</strong>: варианта, который ты сделаешь даже в плохой четверг. Здесь она задана для каждого дня, и она засчитывается наравне с полной тренировкой.</p>
-    <nav class="nav" aria-label="Разделы страницы">
-      <a href="#board">Четыре недели</a>
-      <a href="#why">Что ломается</a>
-      <a href="#rules">Пять правил</a>
-      <a href="#morning">Утро</a>
-      <a href="#doses">Минимумы</a>
-      <a href="#food">Питание</a>
-      <a href="#breakfast">Завтраки</a>
-      <a href="#sleep">Сон</a>
-      <a href="#energy">Энергия</a>
-      <a href="#measure">Что мерить</a>
-    </nav>
   </header>
 
-  <!-- TODAY -->
-  <div class="today" id="today">
+  <nav class="tabs" role="tablist" aria-label="Разделы">
+    <button class="tab-btn" type="button" role="tab" id="tb-today" aria-controls="tp-today" aria-selected="true" data-tab="today">Сегодня<span class="dot" id="today-dot" hidden></span></button>
+    <button class="tab-btn" type="button" role="tab" id="tb-work" aria-controls="tp-work" aria-selected="false" data-tab="work" tabindex="-1">Тренировки</button>
+    <button class="tab-btn" type="button" role="tab" id="tb-food" aria-controls="tp-food" aria-selected="false" data-tab="food" tabindex="-1">Завтраки</button>
+    <button class="tab-btn" type="button" role="tab" id="tb-rules" aria-controls="tp-rules" aria-selected="false" data-tab="rules" tabindex="-1">Правила</button>
+    <button class="tab-btn" type="button" role="tab" id="tb-energy" aria-controls="tp-energy" aria-selected="false" data-tab="energy" tabindex="-1">Энергия</button>
+  </nav>
+
+  <div class="tabpanel" id="tp-today" role="tabpanel" aria-labelledby="tb-today">
+
+<!-- TODAY -->
+  <div class="today" id="todayCard">
     <div class="today-top">
       <div class="badge" id="t-badge">A</div>
       <div class="today-meta">
@@ -395,15 +416,15 @@
     </div>
   </div>
 
-  <!-- STATS -->
+<!-- STATS -->
   <div class="stats">
     <div class="stat"><div class="stat-num" id="s-streak">0</div><div class="stat-cap">дней подряд без пропуска</div></div>
     <div class="stat"><div class="stat-num" id="s-done">0/0</div><div class="stat-cap">выполнено из запланированных</div></div>
     <div class="stat"><div class="stat-num" id="s-min">0</div><div class="stat-cap">спасено минимальной дозой</div></div>
   </div>
 
-  <!-- BOARD -->
-  <section class="board" id="board">
+<!-- BOARD -->
+  <section class="board">
     <div class="sec-head">
       <h2>Четыре недели</h2>
       <p class="prose">Нажми на день, чтобы переключить: пусто → минимум → норма → больше. Воскресенье — отдых, его отмечать не нужно, это часть плана.</p>
@@ -417,103 +438,12 @@
     </div>
   </section>
 
-  <!-- DIAGNOSIS -->
-  <section id="why">
-    <div class="sec-head">
-      <h2>Что ломается на самом деле</h2>
-      <p class="prose">По тому, что ты описал, это четыре разные поломки, и чинятся они по-разному. «Мало мотивации» — не диагноз, это симптом.</p>
-    </div>
-    <div class="rules">
-      <div class="rule">
-        <div class="tag">Корень</div>
-        <h3>Не высыпаешься — значит, утро проиграно вечером</h3>
-        <p>Всё остальное вторично. Пока подъём даётся через силу, любая программа будет держаться на чистом усилии воли, а его хватает примерно до среды. Утро чинится не будильником, а временем отбоя.</p>
-      </div>
-      <div class="rule">
-        <div class="tag">Планка</div>
-        <h3>Ты избегаешь не нагрузки, а неизвестности</h3>
-        <p>«Мне будет тяжело» — это про то, что непонятно, сколько именно терпеть. Поставленный вслух таймер на 20 секунд убирает торг: ты не решаешь, когда закончить, за тебя решает таймер. Планка всегда идёт последней и всегда по таймеру.</p>
-      </div>
-      <div class="rule">
-        <div class="tag">Четверг и пятница</div>
-        <h3>Конец недели — не случайность, это закономерность</h3>
-        <p>К четвергу запас решимости исчерпан, и ты пропустил даже день восстановления — самый лёгкий в неделе. Вывод не «надо стараться сильнее», а «план должен быть рассчитан на уставшую версию тебя». Для этого и нужна минимальная доза.</p>
-      </div>
-      <div class="rule">
-        <div class="tag">Скучно и долго</div>
-        <h3>30–40 минут — это обещание, которое страшно давать</h3>
-        <p>Барьер входа слишком высокий. Если вход стоит 8 минут, ты почти всегда войдёшь — а войдя, в 3 случаях из 4 доделаешь нормальный объём, потому что тяжелее всего именно начать.</p>
-      </div>
-      <div class="rule">
-        <div class="tag">Никто не видит</div>
-        <h3>Без следа пропуск ничего не стоит</h3>
-        <p>Пропущенный день не оставляет следа, поэтому и не ощущается. Сетка выше — это след. Пустая клетка в середине ряда видна, и этого обычно достаточно.</p>
-      </div>
-    </div>
-  </section>
+  </div>
 
-  <!-- RULES -->
-  <section id="rules">
-    <div class="sec-head">
-      <h2>Пять правил на месяц</h2>
-      <p class="prose">Это единственное, что нужно удержать. Техника и объём — потом.</p>
-    </div>
-    <div class="rules">
-      <div class="rule">
-        <h3>1. Минимальная доза — это выполненный день</h3>
-        <p>Не «поблажка» и не половина. Это страховка от нуля. Восемь минут в плохой день сохраняют привычку; ноль её ломает. Галочка за минимум — настоящая галочка.</p>
-      </div>
-      <div class="rule">
-        <h3>2. Никогда не пропускай два дня подряд</h3>
-        <p>Один пропуск — случайность. Два подряд — уже новая привычка. Если пропустил вчера, сегодня делаешь хотя бы минимум, даже если он будет в обед, а не утром.</p>
-      </div>
-      <div class="rule">
-        <h3>3. Два подхода — это норма, а не провал</h3>
-        <p>На прошлой неделе ты делал 1–2 подхода вместо трёх и считал это срывом. Официально понижаю план: недели 1–2 — <strong>2 рабочих подхода</strong>, третий подход это бонус. С недели 3, если станет легко, добавляешь третий. Ты делал норму, просто она была написана неправильно.</p>
-      </div>
-      <div class="rule">
-        <h3>4. Всё неприятное — по таймеру</h3>
-        <p>Планка, боковая планка, растяжка. Ставишь время заранее, вслух, и не пересматриваешь по ходу. Вопрос «сколько ещё выдержу» — главный пожиратель желания тренироваться.</p>
-      </div>
-      <div class="rule">
-        <h3>5. Готовишь с вечера</h3>
-        <p>Коврик развёрнут, одежда лежит сверху, стакан воды налит. Каждое решение, принятое вечером, — это решение, которое не нужно принимать в 6 утра, когда решать нечем.</p>
-      </div>
-    </div>
-  </section>
+  <div class="tabpanel" id="tp-work" role="tabpanel" aria-labelledby="tb-work" hidden>
 
-  <!-- MORNING -->
-  <section id="morning">
-    <div class="sec-head">
-      <h2>Утренняя цепочка</h2>
-      <p class="prose">Порядок здесь важнее содержания: каждый шаг — это триггер следующего. Заодно чинится то, что тебя расстраивает — забытые зубы и завтрак у клавиатуры.</p>
-    </div>
-    <div class="numbered">
-      <div class="step"><div class="step-body">
-        <h3>Вода — 300–400 мл, сразу</h3>
-        <p>Стакан налит с вечера и стоит на виду. Это самое лёгкое действие дня, и оно нужно только затем, чтобы цепочка вообще началась.</p>
-      </div></div>
-      <div class="step"><div class="step-body">
-        <h3>Зубы — до кофе, а не после завтрака</h3>
-        <p>Здесь и решается проблема: после завтрака ты уже за компьютером и про зубы забываешь. Перед кофе ты ещё ни во что не вовлечён. Побочный эффект приятный — сладкое сразу после чистки уже не так тянет.</p>
-      </div></div>
-      <div class="step"><div class="step-body">
-        <h3>Тренировка — 8 или 35 минут, решаешь на коврике</h3>
-        <p>Решение принимается стоя на коврике, а не в кровати. Из кровати любая тренировка выглядит неподъёмной; с коврика минимум выглядит смешным — и ты его делаешь.</p>
-      </div></div>
-      <div class="step"><div class="step-body">
-        <h3>Кофеварку включаешь после, а не до</h3>
-        <p>Кофе становится наградой за сделанное, а не топливом для оттягивания. Если совсем не идёт — можно и до, но тогда обязательно после воды и зубов.</p>
-      </div></div>
-      <div class="step"><div class="step-body">
-        <h3>Завтрак — за столом, 10 минут, ноутбук закрыт</h3>
-        <p>Десять минут, не полчаса. Еда за рабочим экраном не ощущается едой: ты её не замечаешь, а через полтора часа хочется печенья. Это самый дешёвый способ повлиять на живот из всех, что тут написаны.</p>
-      </div></div>
-    </div>
-  </section>
-
-  <!-- DOSES -->
-  <section id="doses">
+<!-- DOSES -->
+  <section>
     <div class="sec-head">
       <h2>Минимальные дозы</h2>
       <p class="prose">Перед минимумом разминка сокращается до двух минут: ходьба на месте 60 сек, круги плечами 30 сек, 8 неглубоких приседаний. Перед нормой — общая разминка 5–6 минут, как в программе.</p>
@@ -521,8 +451,12 @@
     <div class="cards" id="cards"></div>
   </section>
 
-  <!-- FOOD -->
-  <section id="food">
+  </div>
+
+  <div class="tabpanel" id="tp-food" role="tabpanel" aria-labelledby="tb-food" hidden>
+
+<!-- FOOD -->
+  <section>
     <div class="sec-head">
       <h2>Питание: четыре рычага</h2>
       <p class="prose">Сразу про масштаб: при 170 см и 70 кг ты не в лишнем весе. Задача не «похудеть», а поменять состав тела и убрать провалы энергии. Это делается белком и регулярностью, а не дефицитом калорий — жёсткая диета здесь скорее навредит тренировкам.</p>
@@ -573,9 +507,8 @@
     </div>
   </section>
 
-
-  <!-- BREAKFAST -->
-  <section id="breakfast">
+<!-- BREAKFAST -->
+  <section>
     <div class="sec-head">
       <h2>Завтраки на всю семью</h2>
       <p class="prose">Ты уже готовишь детям — значит, отдельный «правильный завтрак» себе готовить не нужно, это лишний повод не готовить вовсе. Готовишь одно на всех, а свою порцию правишь одним и тем же движением: <strong>больше творога или яиц, меньше сахара, сверху йогурт вместо варенья.</strong> Белок указан для твоей порции.</p>
@@ -638,8 +571,113 @@
     </div>
   </section>
 
-  <!-- SLEEP -->
-  <section id="sleep">
+  </div>
+
+  <div class="tabpanel" id="tp-rules" role="tabpanel" aria-labelledby="tb-rules" hidden>
+
+  <p class="lede">Программа у тебя уже есть, и она рабочая. Не хватает не воли — не хватает <strong>нижней границы</strong>: варианта, который ты сделаешь даже в плохой четверг. Здесь она задана для каждого дня, и она засчитывается наравне с полной тренировкой.</p>
+
+<!-- DIAGNOSIS -->
+  <section>
+    <div class="sec-head">
+      <h2>Что ломается на самом деле</h2>
+      <p class="prose">По тому, что ты описал, это четыре разные поломки, и чинятся они по-разному. «Мало мотивации» — не диагноз, это симптом.</p>
+    </div>
+    <div class="rules">
+      <div class="rule">
+        <div class="tag">Корень</div>
+        <h3>Не высыпаешься — значит, утро проиграно вечером</h3>
+        <p>Всё остальное вторично. Пока подъём даётся через силу, любая программа будет держаться на чистом усилии воли, а его хватает примерно до среды. Утро чинится не будильником, а временем отбоя.</p>
+      </div>
+      <div class="rule">
+        <div class="tag">Планка</div>
+        <h3>Ты избегаешь не нагрузки, а неизвестности</h3>
+        <p>«Мне будет тяжело» — это про то, что непонятно, сколько именно терпеть. Поставленный вслух таймер на 20 секунд убирает торг: ты не решаешь, когда закончить, за тебя решает таймер. Планка всегда идёт последней и всегда по таймеру.</p>
+      </div>
+      <div class="rule">
+        <div class="tag">Четверг и пятница</div>
+        <h3>Конец недели — не случайность, это закономерность</h3>
+        <p>К четвергу запас решимости исчерпан, и ты пропустил даже день восстановления — самый лёгкий в неделе. Вывод не «надо стараться сильнее», а «план должен быть рассчитан на уставшую версию тебя». Для этого и нужна минимальная доза.</p>
+      </div>
+      <div class="rule">
+        <div class="tag">Скучно и долго</div>
+        <h3>30–40 минут — это обещание, которое страшно давать</h3>
+        <p>Барьер входа слишком высокий. Если вход стоит 8 минут, ты почти всегда войдёшь — а войдя, в 3 случаях из 4 доделаешь нормальный объём, потому что тяжелее всего именно начать.</p>
+      </div>
+      <div class="rule">
+        <div class="tag">Никто не видит</div>
+        <h3>Без следа пропуск ничего не стоит</h3>
+        <p>Пропущенный день не оставляет следа, поэтому и не ощущается. Сетка выше — это след. Пустая клетка в середине ряда видна, и этого обычно достаточно.</p>
+      </div>
+    </div>
+  </section>
+
+<!-- RULES -->
+  <section>
+    <div class="sec-head">
+      <h2>Пять правил на месяц</h2>
+      <p class="prose">Это единственное, что нужно удержать. Техника и объём — потом.</p>
+    </div>
+    <div class="rules">
+      <div class="rule">
+        <h3>1. Минимальная доза — это выполненный день</h3>
+        <p>Не «поблажка» и не половина. Это страховка от нуля. Восемь минут в плохой день сохраняют привычку; ноль её ломает. Галочка за минимум — настоящая галочка.</p>
+      </div>
+      <div class="rule">
+        <h3>2. Никогда не пропускай два дня подряд</h3>
+        <p>Один пропуск — случайность. Два подряд — уже новая привычка. Если пропустил вчера, сегодня делаешь хотя бы минимум, даже если он будет в обед, а не утром.</p>
+      </div>
+      <div class="rule">
+        <h3>3. Два подхода — это норма, а не провал</h3>
+        <p>На прошлой неделе ты делал 1–2 подхода вместо трёх и считал это срывом. Официально понижаю план: недели 1–2 — <strong>2 рабочих подхода</strong>, третий подход это бонус. С недели 3, если станет легко, добавляешь третий. Ты делал норму, просто она была написана неправильно.</p>
+      </div>
+      <div class="rule">
+        <h3>4. Всё неприятное — по таймеру</h3>
+        <p>Планка, боковая планка, растяжка. Ставишь время заранее, вслух, и не пересматриваешь по ходу. Вопрос «сколько ещё выдержу» — главный пожиратель желания тренироваться.</p>
+      </div>
+      <div class="rule">
+        <h3>5. Готовишь с вечера</h3>
+        <p>Коврик развёрнут, одежда лежит сверху, стакан воды налит. Каждое решение, принятое вечером, — это решение, которое не нужно принимать в 6 утра, когда решать нечем.</p>
+      </div>
+    </div>
+  </section>
+
+<!-- MORNING -->
+  <section>
+    <div class="sec-head">
+      <h2>Утренняя цепочка</h2>
+      <p class="prose">Порядок здесь важнее содержания: каждый шаг — это триггер следующего. Заодно чинится то, что тебя расстраивает — забытые зубы и завтрак у клавиатуры.</p>
+    </div>
+    <div class="numbered">
+      <div class="step"><div class="step-body">
+        <h3>Вода — 300–400 мл, сразу</h3>
+        <p>Стакан налит с вечера и стоит на виду. Это самое лёгкое действие дня, и оно нужно только затем, чтобы цепочка вообще началась.</p>
+      </div></div>
+      <div class="step"><div class="step-body">
+        <h3>Зубы — до кофе, а не после завтрака</h3>
+        <p>Здесь и решается проблема: после завтрака ты уже за компьютером и про зубы забываешь. Перед кофе ты ещё ни во что не вовлечён. Побочный эффект приятный — сладкое сразу после чистки уже не так тянет.</p>
+      </div></div>
+      <div class="step"><div class="step-body">
+        <h3>Тренировка — 8 или 35 минут, решаешь на коврике</h3>
+        <p>Решение принимается стоя на коврике, а не в кровати. Из кровати любая тренировка выглядит неподъёмной; с коврика минимум выглядит смешным — и ты его делаешь.</p>
+      </div></div>
+      <div class="step"><div class="step-body">
+        <h3>Кофеварку включаешь после, а не до</h3>
+        <p>Кофе становится наградой за сделанное, а не топливом для оттягивания. Если совсем не идёт — можно и до, но тогда обязательно после воды и зубов.</p>
+      </div></div>
+      <div class="step"><div class="step-body">
+        <h3>Завтрак — за столом, 10 минут, ноутбук закрыт</h3>
+        <p>Десять минут, не полчаса. Еда за рабочим экраном не ощущается едой: ты её не замечаешь, а через полтора часа хочется печенья. Это самый дешёвый способ повлиять на живот из всех, что тут написаны.</p>
+      </div></div>
+    </div>
+  </section>
+
+  </div>
+
+  <div class="tabpanel" id="tp-energy" role="tabpanel" aria-labelledby="tb-energy" hidden>
+
+<!-- SLEEP -->
+  <section>
     <div class="sec-head">
       <h2>Сон: считать надо назад</h2>
       <p class="prose">Один расчёт, который решает больше, чем вся остальная страница.</p>
@@ -664,9 +702,8 @@
     </div>
   </section>
 
-
-  <!-- ENERGY -->
-  <section id="energy">
+<!-- ENERGY -->
+  <section>
     <div class="sec-head">
       <h2>Энергия и мотивация</h2>
       <p class="prose">Сразу честно: 10–12 часов за компьютером — это и есть главный расход. Получасовая зарядка не компенсирует одиннадцать часов сидения, она делает так, что эти одиннадцать часов переносятся легче. Разницу важно понимать, иначе через месяц будет разочарование не по адресу.</p>
@@ -743,8 +780,8 @@
     </div>
   </section>
 
-  <!-- MEASURE -->
-  <section id="measure">
+<!-- MEASURE -->
+  <section>
     <div class="sec-head">
       <h2>Что мерить — и чего не мерить</h2>
       <p class="prose">Ежедневные измерения сжигают мотивацию: тело шумит сильнее, чем меняется, и ты видишь шум, а не прогресс.</p>
@@ -772,6 +809,8 @@
       <p>Три вопроса, и всё. Сколько дней из шести? Какой день сорвался и что было накануне вечером? Что я меняю на следующей неделе — ровно одну вещь? Больше одной за раз не меняем.</p>
     </div>
   </section>
+
+  </div>
 
   <footer class="foot">
     <div class="eyebrow">Границы</div>
@@ -1029,7 +1068,11 @@
       var onh = !!(e && e.habits && e.habits[h]);
       chips[c].setAttribute("aria-pressed", onh ? "true" : "false");
     }
-    document.getElementById("today").setAttribute("data-key", key);
+    document.getElementById("todayCard").setAttribute("data-key", key);
+
+    // точка на вкладке «Сегодня», пока день не отмечен
+    var dot = document.getElementById("today-dot");
+    if (dot) dot.hidden = (letter === "О") || !!lvl || realIdx < 0 || realIdx > 27;
   }
 
   function renderBoard(){
@@ -1091,7 +1134,7 @@
   document.getElementById("t-marks").addEventListener("click", function(ev){
     var b = ev.target.closest ? ev.target.closest(".mark") : null;
     if (!b || b.disabled) return;
-    var key = document.getElementById("today").getAttribute("data-key");
+    var key = document.getElementById("todayCard").getAttribute("data-key");
     var e = entry(key);
     var lvl = b.getAttribute("data-lvl");
     e.level = (e.level === lvl) ? "" : lvl;
@@ -1103,7 +1146,7 @@
   document.getElementById("t-habits").addEventListener("click", function(ev){
     var b = ev.target.closest ? ev.target.closest(".chip") : null;
     if (!b) return;
-    var key = document.getElementById("today").getAttribute("data-key");
+    var key = document.getElementById("todayCard").getAttribute("data-key");
     var e = entry(key);
     var h = b.getAttribute("data-h");
     e.habits[h] = !e.habits[h];
@@ -1112,11 +1155,61 @@
     render();
   });
 
+
+  // ---------- вкладки ----------
+  var TABS = ["today","work","food","rules","energy"];
+  var TABKEY = "min-doza-tab";
+
+  function showTab(name, scroll){
+    if (TABS.indexOf(name) < 0) name = "today";
+    for (var i = 0; i < TABS.length; i++){
+      var t = TABS[i];
+      var btn = document.getElementById("tb-" + t);
+      var panel = document.getElementById("tp-" + t);
+      if (!btn || !panel) continue;
+      var on = (t === name);
+      btn.setAttribute("aria-selected", on ? "true" : "false");
+      btn.tabIndex = on ? 0 : -1;
+      panel.hidden = !on;
+    }
+    try { localStorage.setItem(TABKEY, name); } catch(e){}
+    if (location.hash !== "#" + name){
+      try { history.replaceState(null, "", "#" + name); } catch(e){}
+    }
+    if (scroll) window.scrollTo(0, 0);
+  }
+
+  document.querySelector(".tabs").addEventListener("click", function(ev){
+    var b = ev.target.closest ? ev.target.closest(".tab-btn") : null;
+    if (!b) return;
+    showTab(b.getAttribute("data-tab"), true);
+  });
+
+  document.querySelector(".tabs").addEventListener("keydown", function(ev){
+    if (ev.key !== "ArrowRight" && ev.key !== "ArrowLeft") return;
+    var cur = TABS.indexOf(document.querySelector('.tab-btn[aria-selected="true"]').getAttribute("data-tab"));
+    var next = (cur + (ev.key === "ArrowRight" ? 1 : TABS.length - 1)) % TABS.length;
+    showTab(TABS[next], true);
+    document.getElementById("tb-" + TABS[next]).focus();
+    ev.preventDefault();
+  });
+
+  function initialTab(){
+    var h = (location.hash || "").replace("#", "");
+    if (TABS.indexOf(h) >= 0) return h;
+    try {
+      var saved = localStorage.getItem(TABKEY);
+      if (TABS.indexOf(saved) >= 0) return saved;
+    } catch(e){}
+    return "today";
+  }
+
   // ---------- boot ----------
   loadLocal();
   buildGrid();
   buildCards();
   render();
+  showTab(initialTab(), false);
 
   // Хранилище отметок.
   // REMOTE_URL пуст — отметки живут в браузере этого устройства.
