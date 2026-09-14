@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="Трекер утренних тренировок, семейных завтраков и энергии на четыре недели.">
+<meta name="description" content="Трекер утренних тренировок, техники упражнений, питания и энергии на четыре недели.">
 <meta name="theme-color" content="#EEF1EC" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0E1512" media="(prefers-color-scheme: dark)">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -175,6 +175,94 @@
   }
   .chip[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
   .chip[aria-pressed="true"]{font-weight:600}
+
+  /* ---------- мотивация ---------- */
+  .pulse{
+    border-left:3px solid var(--accent);
+    background:var(--surface);
+    border-radius:0 var(--r) var(--r) 0;
+    padding:15px 17px;display:flex;flex-direction:column;gap:6px;
+  }
+  .pulse.warn{border-left-color:var(--signal)}
+  .pulse .k{font-family:var(--f-mono);font-size:.63rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+  .pulse.warn .k{color:var(--signal)}
+  .pulse h3{font-size:1.05rem}
+  .pulse p{font-size:.93rem;color:var(--ink-soft);max-width:64ch}
+
+  /* ---------- таймер ---------- */
+  .timer{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+    box-shadow:var(--shadow);padding:18px 18px 20px;
+    display:flex;flex-direction:column;gap:14px;
+  }
+  .timer-top{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+  .dial{flex:none;position:relative;width:132px;height:132px}
+  .dial svg{width:100%;height:100%;transform:rotate(-90deg)}
+  .dial .track{fill:none;stroke:var(--surface-2);stroke-width:9}
+  .dial .bar{fill:none;stroke:var(--accent);stroke-width:9;stroke-linecap:round;transition:stroke-dashoffset .25s linear}
+  .dial.last .bar{stroke:var(--signal)}
+  .dial-num{
+    position:absolute;inset:0;display:grid;place-items:center;
+    font-family:var(--f-display);font-size:2.5rem;line-height:1;
+    font-variant-numeric:tabular-nums;color:var(--ink);
+  }
+  .timer-side{display:flex;flex-direction:column;gap:10px;min-width:0;flex:1 1 200px}
+  .timer-label{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .presets{display:flex;flex-wrap:wrap;gap:6px}
+  .preset{
+    font:inherit;font-family:var(--f-mono);font-size:.8rem;cursor:pointer;
+    border:1px solid var(--line-strong);border-radius:6px;padding:6px 10px;
+    background:transparent;color:var(--ink-soft);
+  }
+  .preset[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+  .timer-actions{display:flex;gap:8px;flex-wrap:wrap}
+  .btn{
+    font:inherit;font-weight:600;font-size:.92rem;cursor:pointer;
+    border-radius:999px;padding:11px 22px;border:1px solid var(--ink);
+    background:var(--ink);color:var(--paper);
+  }
+  .btn.ghost{background:transparent;color:var(--ink-soft);border-color:var(--line-strong);font-weight:500}
+  .btn.ghost:hover{border-color:var(--ink-soft)}
+  .timer-note{font-size:.82rem;color:var(--muted)}
+
+  /* ---------- техника ---------- */
+  .ex{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+    padding:16px 17px;display:flex;flex-direction:column;gap:13px;
+  }
+  .ex-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap}
+  .ex-title{font-weight:700;font-size:1.02rem}
+  .ex-where{font-family:var(--f-mono);font-size:.63rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+  .poses{display:flex;gap:10px;flex-wrap:wrap}
+  .pose{
+    flex:1 1 160px;min-width:140px;max-width:260px;
+    border:1px solid var(--line);border-radius:8px;background:var(--surface-2);
+    padding:6px;display:flex;flex-direction:column;gap:4px;
+  }
+  .pose svg{width:100%;height:auto;display:block;max-width:100%}
+  .pose.anim{flex:1 1 240px;max-width:320px}
+  .pose-cap{
+    font-family:var(--f-mono);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--muted);text-align:center;
+  }
+  .fig-ink{stroke:var(--ink-soft);fill:none;stroke-width:8;stroke-linecap:round;stroke-linejoin:round}
+  .fig-acc{stroke:var(--accent);fill:none;stroke-width:8;stroke-linecap:round;stroke-linejoin:round}
+  .fig-head{fill:var(--ink-soft);stroke:none}
+  .fig-hint{stroke:var(--signal);fill:none;stroke-width:2.6;stroke-linecap:round;stroke-dasharray:4 4}
+  .fig-prop{stroke:var(--line-strong);fill:none;stroke-width:3;stroke-linecap:round}
+  .ex-block{display:flex;flex-direction:column;gap:3px}
+  .ex-block .k{font-family:var(--f-mono);font-size:.62rem;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
+  .ex-block.err .k{color:var(--signal)}
+  .ex-block ul{font-size:.88rem;color:var(--ink-soft);padding-left:1.1em}
+  .ex-block p{font-size:.88rem;color:var(--ink-soft)}
+  .ex-list{display:flex;flex-direction:column;gap:12px}
+
+  /* ---------- лайфхаки ---------- */
+  .hacks{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--line)}
+  .hack{display:grid;grid-template-columns:1.6rem 1fr;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);align-items:start}
+  .hack .n{font-family:var(--f-mono);font-size:.72rem;color:var(--accent);padding-top:2px}
+  .hack p{font-size:.9rem;color:var(--ink-soft)}
+  .hack strong{color:var(--ink)}
 
   /* ---------- stats ---------- */
   .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
@@ -352,6 +440,9 @@
     .cell{font-size:.88rem;border-radius:6px}
     .step{grid-template-columns:1.5rem 1fr;gap:11px}
     .tabs{gap:5px;padding:9px 20px}
+    .dial{width:112px;height:112px}
+    .dial-num{font-size:2.1rem}
+    .timer-top{gap:14px}
     .tab-btn{font-size:.85rem;padding:6px 13px}
     .tabpanel{gap:32px}
   }
@@ -373,12 +464,20 @@
   <nav class="tabs" role="tablist" aria-label="Разделы">
     <button class="tab-btn" type="button" role="tab" id="tb-today" aria-controls="tp-today" aria-selected="true" data-tab="today">Сегодня<span class="dot" id="today-dot" hidden></span></button>
     <button class="tab-btn" type="button" role="tab" id="tb-work" aria-controls="tp-work" aria-selected="false" data-tab="work" tabindex="-1">Тренировки</button>
-    <button class="tab-btn" type="button" role="tab" id="tb-food" aria-controls="tp-food" aria-selected="false" data-tab="food" tabindex="-1">Завтраки</button>
+    <button class="tab-btn" type="button" role="tab" id="tb-tech" aria-controls="tp-tech" aria-selected="false" data-tab="tech" tabindex="-1">Техника</button>
+    <button class="tab-btn" type="button" role="tab" id="tb-food" aria-controls="tp-food" aria-selected="false" data-tab="food" tabindex="-1">Питание</button>
     <button class="tab-btn" type="button" role="tab" id="tb-rules" aria-controls="tp-rules" aria-selected="false" data-tab="rules" tabindex="-1">Правила</button>
     <button class="tab-btn" type="button" role="tab" id="tb-energy" aria-controls="tp-energy" aria-selected="false" data-tab="energy" tabindex="-1">Энергия</button>
   </nav>
 
   <div class="tabpanel" id="tp-today" role="tabpanel" aria-labelledby="tb-today">
+
+<!-- PULSE -->
+  <div class="pulse" id="pulse">
+    <div class="k" id="pulse-tag">Старт</div>
+    <h3 id="pulse-title">Программа начинается в понедельник</h3>
+    <p id="pulse-text">До старта ничего делать не нужно. Подготовь вечером коврик и стакан воды — этого достаточно.</p>
+  </div>
 
 <!-- TODAY -->
   <div class="today" id="todayCard">
@@ -442,6 +541,41 @@
 
   <div class="tabpanel" id="tp-work" role="tabpanel" aria-labelledby="tb-work" hidden>
 
+<!-- TIMER -->
+  <section>
+    <div class="sec-head">
+      <h2>Таймер</h2>
+      <p class="prose">Для планки, боковой планки и растяжек. Смысл простой: решение «сколько терпеть» принимается до начала, а не в середине подхода, когда терпеть уже не хочется.</p>
+    </div>
+    <div class="timer">
+      <div class="timer-top">
+        <div class="dial" id="dial">
+          <svg viewBox="0 0 100 100" aria-hidden="true">
+            <circle class="track" cx="50" cy="50" r="43"></circle>
+            <circle class="bar" id="dial-bar" cx="50" cy="50" r="43" stroke-dasharray="270.2" stroke-dashoffset="0"></circle>
+          </svg>
+          <div class="dial-num" id="dial-num" role="timer">20</div>
+        </div>
+        <div class="timer-side">
+          <div class="timer-label">Сколько держать</div>
+          <div class="presets" id="presets">
+            <button class="preset" type="button" data-sec="15" aria-pressed="false">15 сек</button>
+            <button class="preset" type="button" data-sec="20" aria-pressed="true">20 сек</button>
+            <button class="preset" type="button" data-sec="30" aria-pressed="false">30 сек</button>
+            <button class="preset" type="button" data-sec="45" aria-pressed="false">45 сек</button>
+            <button class="preset" type="button" data-sec="60" aria-pressed="false">60 сек</button>
+            <button class="preset" type="button" data-sec="90" aria-pressed="false">90 сек</button>
+          </div>
+          <div class="timer-actions">
+            <button class="btn" type="button" id="t-start">Старт</button>
+            <button class="btn ghost" type="button" id="t-reset">Сброс</button>
+          </div>
+        </div>
+      </div>
+      <p class="timer-note" id="t-note">Пока таймер идёт, экран старается не гаснуть. В конце — сигнал и вибрация, так что смотреть на телефон не нужно.</p>
+    </div>
+  </section>
+
 <!-- DOSES -->
   <section>
     <div class="sec-head">
@@ -449,6 +583,24 @@
       <p class="prose">Перед минимумом разминка сокращается до двух минут: ходьба на месте 60 сек, круги плечами 30 сек, 8 неглубоких приседаний. Перед нормой — общая разминка 5–6 минут, как в программе.</p>
     </div>
     <div class="cards" id="cards"></div>
+  </section>
+
+  </div>
+
+  <div class="tabpanel" id="tp-tech" role="tabpanel" aria-labelledby="tb-tech" hidden>
+
+<!-- TECH -->
+  <section>
+    <div class="sec-head">
+      <h2>Как это делать</h2>
+      <p class="prose">Зелёным выделено то, что движется и за чем стоит следить, оранжевым пунктиром — направление. Где у упражнения две фазы, фигура ходит между ними; где это статичное удержание — стоит неподвижно, так и должно быть. Это напоминание, а не эталон: форма у каждого своя.</p>
+      <div><button class="btn ghost" type="button" id="anim-toggle" aria-pressed="true">Остановить движение</button></div>
+    </div>
+    <div class="ex-list" id="ex-list"></div>
+    <div class="callout">
+      <div class="k">Когда останавливаться</div>
+      <p>Резкая боль, онемение, покалывание, ощущение нестабильности в суставе — остановиться и не «дорабатывать через терпение». Жжение в мышце к концу подхода и лёгкая крепатура на следующий день — это другое, это нормально.</p>
+    </div>
   </section>
 
   </div>
@@ -568,6 +720,93 @@
     <div class="callout">
       <div class="k">Одно действие, которое экономит больше всего</div>
       <p>Свари в воскресенье 10 яиц и поставь в холодильник. Два варёных яйца к любому завтраку — это <strong>+13 г белка за ноль минут готовки</strong>. Это самая дешёвая страховка на утро, когда всё пошло не по плану.</p>
+    </div>
+  </section>
+
+<!-- MORE FOOD -->
+  <section>
+    <div class="sec-head">
+      <h2>Ещё три завтрака</h2>
+      <p class="prose">Те же принципы, другие вкусы — чтобы не приедалось к третьей неделе.</p>
+    </div>
+    <div class="recipes">
+
+      <div class="card recipe">
+        <div class="card-head"><span class="card-title">Творожные панкейки</span><span class="rtime">12 мин</span></div>
+        <div class="block n"><span class="k">Состав</span><span class="v">300 г творога, 2 яйца, 4 ст. л. овсяной муки (смели хлопья в блендере), 1 ч. л. разрыхлителя.</span></div>
+        <div class="block n"><span class="k">Как</span><span class="v">Смешать до однородности, жарить как оладьи на слабом огне под крышкой. Детям — с бананом и мёдом, тебе — с йогуртом. Внешне это десерт, по составу — обычный творог с яйцами.</span></div>
+        <div class="rfoot"><span class="prot">≈ 25 г белка</span><span class="rprep">Тесто стоит в холодильнике до двух суток</span></div>
+      </div>
+
+      <div class="card recipe">
+        <div class="card-head"><span class="card-title">Гречка с яйцом и сыром</span><span class="rtime">8 мин</span></div>
+        <div class="block n"><span class="k">Состав</span><span class="v">Готовая гречка из холодильника, 2 яйца, 30 г сыра, помидор.</span></div>
+        <div class="block n"><span class="k">Как</span><span class="v">Гречку разогреть на сковороде, сверху разбить два яйца, накрыть крышкой на 4 минуты, посыпать сыром. Гречку варить с вечера сразу на всех — она и на завтрак, и в обеденную миску.</span></div>
+        <div class="rfoot"><span class="prot">≈ 21 г белка</span><span class="rprep">Несладкий завтрак — если сладкое с утра не идёт</span></div>
+      </div>
+
+      <div class="card recipe">
+        <div class="card-head"><span class="card-title">Скрэмбл с творожным сыром</span><span class="rtime">5 мин</span></div>
+        <div class="block n"><span class="k">Состав</span><span class="v">3 яйца, 40 г творожного сыра, кусок хлеба, помидор или огурец.</span></div>
+        <div class="block n"><span class="k">Как</span><span class="v">Яйца взбить, вылить на слабый огонь и постоянно помешивать лопаткой. Снять чуть недоготовленными и вмешать творожный сыр — он доведёт их до кремовой текстуры. Самый быстрый завтрак в списке после ленивой овсянки.</span></div>
+        <div class="rfoot"><span class="prot">≈ 24 г белка</span><span class="rprep">Детям заходит лучше обычной яичницы</span></div>
+      </div>
+
+    </div>
+  </section>
+
+<!-- LUNCH -->
+  <section>
+    <div class="sec-head">
+      <h2>Обед и перекусы на удалёнке</h2>
+      <p class="prose">Завтрак ты уже чинишь. Второе слабое место при работе из дома — обед: его никто не объявляет, поэтому он либо пропускается, либо превращается в кофе с печеньем, и тогда вечером ты доедаешь за весь день.</p>
+    </div>
+    <div class="rules">
+      <div class="rule">
+        <div class="tag">Схема</div>
+        <h3>Миска за семь минут</h3>
+        <p>Готовая крупа из холодильника + банка тунца или фасоли + замороженные овощи из микроволновки + ложка оливкового масла или йогурта. Это не рецепт, а конструктор: меняешь любой из четырёх элементов и неделю не повторяешься.</p>
+      </div>
+      <div class="rule">
+        <div class="tag">Заготовка</div>
+        <h3>Курица на неделю</h3>
+        <p>700–800 г грудки, духовка 200 °C, 25 минут, нарезать и убрать в контейнер. Дальше она просто кидается в любую миску. Пятнадцать минут работы в воскресенье закрывают четыре обеда.</p>
+      </div>
+      <div class="rule">
+        <div class="tag">Разрешение</div>
+        <h3>Омлет на обед — это нормально</h3>
+        <p>Три яйца и кусок хлеба готовятся быстрее, чем едет доставка. Обед не обязан быть «полноценным», он обязан быть.</p>
+      </div>
+      <div class="rule">
+        <div class="tag">Перекусы</div>
+        <h3>Что держать под рукой вместо печенья</h3>
+        <p>Греческий йогурт, творог с ягодами, варёное яйцо, горсть орехов, сыр. Работает не сила воли, а наличие: если в холодильнике есть готовый белок, рука тянется к нему — просто потому, что он есть.</p>
+      </div>
+      <div class="rule">
+        <div class="tag">Аварийный случай</div>
+        <h3>Уже 16:00, а ты не обедал</h3>
+        <p>Два яйца и хлеб за пять минут. «Дотерплю до ужина» — плохой план: до ужина ты не дотерпишь, и это закончится не ужином, а всем, что найдётся на кухне.</p>
+      </div>
+    </div>
+  </section>
+
+<!-- HACKS -->
+  <section>
+    <div class="sec-head">
+      <h2>Десять приёмов</h2>
+      <p class="prose">Ничего из этого не требует силы воли — в том и смысл. Каждый пункт меняет обстановку, а не тебя.</p>
+    </div>
+    <div class="hacks">
+      <div class="hack"><span class="n">01</span><p><strong>Готовь белок партией в воскресенье.</strong> Десять варёных яиц, запечённая грудка, творожная запеканка — полчаса работы закрывают половину недели.</p></div>
+      <div class="hack"><span class="n">02</span><p><strong>Правило тарелки.</strong> Половина — овощи, четверть — белок, четверть — гарнир. Никаких подсчётов, при этом попадание в норму почти автоматическое.</p></div>
+      <div class="hack"><span class="n">03</span><p><strong>Ешь белок первым.</strong> Тарелка та же, порядок другой — и к гарниру ты подходишь уже наполовину сытым.</p></div>
+      <div class="hack"><span class="n">04</span><p><strong>На столе стоит вода, а не кофе.</strong> Рука на автомате тянется к тому, что стоит ближе. Это решается расстановкой, а не решимостью.</p></div>
+      <div class="hack"><span class="n">05</span><p><strong>Не держи дома то, что не хочешь съесть вечером.</strong> Отказаться один раз в магазине дешевле, чем отказываться каждый вечер у холодильника.</p></div>
+      <div class="hack"><span class="n">06</span><p><strong>Замороженные овощи — это нормально.</strong> Пять минут в микроволновке, и вопрос овощей закрыт. По составу они не хуже свежих, а по вероятности быть съеденными — заметно лучше.</p></div>
+      <div class="hack"><span class="n">07</span><p><strong>Готовь ужин с запасом.</strong> Завтрашний обед должен доставаться из холодильника, а не придумываться в час дня между задачами.</p></div>
+      <div class="hack"><span class="n">08</span><p><strong>Сладкое покупай порционно, а не пачками.</strong> Разница между «одна печенька» и «полпачки» — это упаковка, а не характер.</p></div>
+      <div class="hack"><span class="n">09</span><p><strong>Ставь таймер на обед.</strong> На удалёнке обед пропускается не от занятости, а оттого, что его некому объявить. Пусть объявляет телефон.</p></div>
+      <div class="hack"><span class="n">10</span><p><strong>Не ешь за рабочим экраном.</strong> Единственный пункт, который ты уже знаешь, и единственный, который заметно меняет вечерний аппетит. Десять минут за столом — вся цена.</p></div>
     </div>
   </section>
 
@@ -1089,41 +1328,135 @@
     }
   }
 
-  function renderStats(){
+  function computeStats(){
     var tIdx = idxOfDate(todayLocal());
-    var planned = 0, done = 0, mins = 0;
-    for (var n=0; n<28; n++){
-      var letter = WEEKS[Math.floor(n/7)][n%7];
+    var planned = 0, done = 0, mins = 0, n, letter, key, lvl;
+    for (n = 0; n < 28; n++){
+      letter = WEEKS[Math.floor(n/7)][n%7];
       if (letter === "О") continue;
-      var key = iso(addDays(START, n));
-      var lvl = levelOf(key);
+      key = iso(addDays(START, n));
+      lvl = levelOf(key);
       if (n <= tIdx) planned++;
-      if (lvl) { done++; if (lvl === "min") mins++; }
+      if (lvl){ done++; if (lvl === "min") mins++; }
     }
     if (planned < 0) planned = 0;
 
     // серия: идём назад от сегодня, дни отдыха пропускаем насквозь
-    var streak = 0;
-    var start = Math.min(tIdx, 27);
+    var streak = 0, start = Math.min(tIdx, 27), k, L;
+    var todayLetter = (start >= 0) ? WEEKS[Math.floor(start/7)][start%7] : "О";
+    var todayLvl = (start >= 0) ? levelOf(iso(addDays(START, start))) : "";
     if (start >= 0){
-      // если сегодня ещё не отмечено — начинаем со вчера
-      var todayLetter = WEEKS[Math.floor(start/7)][start%7];
-      var todayKey = iso(addDays(START, start));
-      if (todayLetter !== "О" && !levelOf(todayKey)) start--;
-      for (var k=start; k>=0; k--){
-        var L = WEEKS[Math.floor(k/7)][k%7];
+      var from = start;
+      if (todayLetter !== "О" && !todayLvl) from--;
+      for (k = from; k >= 0; k--){
+        L = WEEKS[Math.floor(k/7)][k%7];
         if (L === "О") continue;
         if (levelOf(iso(addDays(START, k)))) streak++;
         else break;
       }
     }
 
-    document.getElementById("s-streak").textContent = String(streak);
-    document.getElementById("s-done").textContent = done + "/" + Math.max(planned, 0);
-    document.getElementById("s-min").textContent = String(mins);
+    // сколько рабочих дней подряд пропущено прямо перед сегодня
+    var missBefore = 0;
+    if (start >= 0){
+      for (k = start - 1; k >= 0; k--){
+        L = WEEKS[Math.floor(k/7)][k%7];
+        if (L === "О") continue;
+        if (levelOf(iso(addDays(START, k)))) break;
+        missBefore++;
+      }
+    }
+
+    return {
+      tIdx: tIdx, planned: planned, done: done, mins: mins, streak: streak,
+      missBefore: missBefore, todayLetter: todayLetter, todayLvl: todayLvl,
+      week: (start >= 0 ? Math.floor(start/7) + 1 : 0)
+    };
   }
 
-  function render(){ renderToday(); renderBoard(); renderStats(); }
+  function renderStats(st){
+    document.getElementById("s-streak").textContent = String(st.streak);
+    document.getElementById("s-done").textContent = st.done + "/" + Math.max(st.planned, 0);
+    document.getElementById("s-min").textContent = String(st.mins);
+  }
+
+  // ---------- текст, который реагирует на прогресс ----------
+  function pulseFor(st){
+    var d = st.done, s2 = st.streak, m = st.mins;
+
+    if (st.tIdx < 0) return ["Старт", "Программа начинается в понедельник",
+      "До старта делать ничего не нужно. Подготовь с вечера коврик, одежду и стакан воды — из всего списка именно это решает утро."];
+
+    if (st.tIdx > 27) return [d >= 20 ? "Месяц закрыт" : "Месяц прошёл",
+      d + " " + plural(d, "день", "дня", "дней") + " из 24",
+      d >= 20
+        ? "Это много. Теперь есть на чём строить: можно возвращать третий подход, поднимать время планки и пересматривать нагрузку. Скажи — пересоберу программу на следующий месяц."
+        : "Неважно, сколько именно вышло: месяц назад не было и этого. Давай разберём, какие дни сыпались чаще всего, и перепишем неделю под них."];
+
+    if (st.missBefore >= 2 && !st.todayLvl) return ["Warn", "Два пропуска подряд",
+      "Вот ровно здесь всё обычно и заканчивается. Один пропуск — случайность, два — уже новая привычка. Сегодня только минимум, восемь минут, и неважно, утром или в обед: задача не догнать план, а не дать этому стать третьим днём."];
+
+    if (st.missBefore === 1 && !st.todayLvl) return ["Warn", "Вчера был пропуск",
+      "Вчерашний день уже не вернуть, а сегодняшний ещё можно не потерять. Минимум засчитывается полностью — восемь минут, и счётчик пойдёт заново."];
+
+    if (st.todayLetter === "О") return ["Воскресенье", "Сегодня отдых, и это часть плана",
+      "Делать не нужно ничего. Потрать пять минут на разбор: сколько дней из шести получилось, какой день сорвался и что было накануне вечером, и что меняешь на следующей неделе — ровно одну вещь."];
+
+    if (!st.todayLvl){
+      if (st.tIdx === 0) return ["День первый", "Сегодня Силовая A",
+        "Не решай в кровати — из кровати любая тренировка выглядит неподъёмной. Встань на коврик и начни разминку: решение принимается уже стоя, и почти всегда в пользу «сделаю»."];
+      if (s2 >= 5) return ["Серия " + s2, "Серия из " + s2 + " " + plural(s2, "дня", "дней", "дней") + " — не обрывай её сегодня",
+        "Самая дешёвая страховка: если день тяжёлый, делаешь минимум. Восемь минут закрывают день полностью и серию не рвут."];
+      if (s2 >= 1) return ["Серия " + s2, "Сегодня " + (s2 + 1) + "-й день подряд",
+        "Начни с двух минут разминки, дальше видно будет. Тяжелее всего именно начать, а не продолжить."];
+      return ["Сегодня", "Восемь минут — и день закрыт",
+        "Минимум на сегодняшний день расписан в карточке ниже. Это не запасной вариант, а полноценная галочка."];
+    }
+
+    if (m >= 3 && m * 2 >= d) return ["Минимумы", "Минимальная доза спасла " + m + " " + plural(m, "день", "дня", "дней"),
+      "Именно ради этого она и придумана. Без неё эти дни были бы нулями, а нули — единственное, что реально ломает привычку. Объём вернётся сам, когда станет легче."];
+
+    if (st.week >= 4) return ["Последняя неделя", "Идёт четвёртая неделя",
+      "Дальше начинается самое интересное: месяц покажет, что реально работает, а что было выдумкой. В воскресенье соберём итоги и пересоберём программу под то, что получилось."];
+
+    if (s2 >= 14) return ["Серия " + s2, "Две недели без пропусков",
+      "На этом сроке утро перестаёт требовать решения и становится просто утром. Не увеличивай всё сразу: добавь третий подход в одном упражнении, а не во всех."];
+
+    if (s2 >= 7) return ["Серия " + s2, "Неделя целиком, без единого пропуска",
+      "Это тот рубеж, до которого доходит меньшинство. Если упражнения стали заметно легче — можно добавлять повторы внутри диапазона, но по одному изменению за раз."];
+
+    if (s2 >= 5) return ["Серия " + s2, s2 + " " + plural(s2, "день", "дня", "дней") + " подряд",
+      "Неделя почти закрыта. Обрати внимание, что было накануне тех вечеров, когда утро далось легко, — именно это и стоит повторять."];
+
+    if (s2 >= 3) return ["Серия " + s2, "Три дня — это уже не случайность",
+      "Примерно здесь и начинает хотеться «пропустить разок». Помни: дорого стоит не первый пропуск, а второй. Первый прощается полностью."];
+
+    if (s2 === 2) return ["Серия 2", "Два дня подряд",
+      "Ещё ничего не доказано, но и ломать пока нечего. Главное сейчас — не героизм, а завтрашнее утро."];
+
+    return ["День " + (st.tIdx + 1), "Сделано",
+      "Самый дорогой день в месяце — сегодняшний: дальше идёт уже не решение начать, а решение продолжить. Оно даётся легче."];
+  }
+
+  function plural(n, one, few, many){
+    var a = Math.abs(n) % 100, b = a % 10;
+    if (a > 10 && a < 20) return many;
+    if (b > 1 && b < 5) return few;
+    if (b === 1) return one;
+    return many;
+  }
+
+  function renderPulse(st){
+    var r = pulseFor(st);
+    var warn = (r[0] === "Warn");
+    var box = document.getElementById("pulse");
+    box.className = "pulse" + (warn ? " warn" : "");
+    document.getElementById("pulse-tag").textContent = warn ? "Внимание" : r[0];
+    document.getElementById("pulse-title").textContent = r[1];
+    document.getElementById("pulse-text").textContent = r[2];
+  }
+
+  function render(){ var st = computeStats(); renderToday(); renderBoard(); renderStats(st); renderPulse(st); }
 
   // ---------- events ----------
   document.getElementById("t-marks").addEventListener("click", function(ev){
@@ -1151,8 +1484,370 @@
   });
 
 
+  // ---------- схемы упражнений ----------
+  var EX = [
+    { t:"Приседания", w:"Силовая A",
+      poses:[
+        {cap:"старт", g:90, head:[50,14,6], s:["50,21 50,50","50,27 61,42 63,57"], a:["50,50 50,70 50,90"]},
+        {cap:"низ",   g:90, head:[44,31,6], s:["46,39 42,61","46,41 58,43 70,45"], a:["42,61 58,72 52,90"]}
+      ],
+      do:["Стопы чуть шире плеч, носки слегка развёрнуты наружу.",
+          "Таз уходит назад и вниз одновременно — как будто садишься на низкий стул.",
+          "Колени идут в сторону носков и не заваливаются внутрь.",
+          "Глубина — комфортная: до той точки, где спина ещё остаётся длинной."],
+      err:["Пятки отрываются от пола.","Поясница круглится в нижней точке — значит, ты ушёл глубже, чем позволяет подвижность."],
+      easy:"Приседай до стула и едва касайся его тазом, не садясь полностью." },
+
+    { t:"Отжимания", w:"Силовая A и Б",
+      poses:[
+        {cap:"верх", g:90, head:[18,55,6], s:["27,60 57,70 73,78 87,87"], a:["27,60 27,75 27,90"]},
+        {cap:"низ",  g:90, head:[22,69,6], s:["31,73 59,80 75,85 89,89"], a:["31,73 43,86 28,90"]}
+      ],
+      do:["Ладони чуть шире плеч и на уровне груди, а не под лицом.",
+          "Тело — одной линией от головы до пяток, живот и ягодицы слегка напряжены.",
+          "Локти уходят назад под углом 30–45° к корпусу, не строго в стороны.",
+          "Опускайся, пока грудь не окажется примерно в кулаке от пола."],
+      err:["Таз проваливается вниз или задирается вверх.","Шея тянется вперёд, к полу идёт подбородок, а не грудь."],
+      easy:"Руки на стол или спинку дивана. Чем выше опора, тем легче — это полноценный вариант, а не поблажка." },
+
+    { t:"Подтягивания", w:"Силовая A и Б",
+      poses:[
+        {cap:"вис",  bar:[18,82,10], head:[50,33,6.5], s:["43,46 57,46","50,46 50,68 50,86"], a:["38,11 35,28 43,46","62,11 65,28 57,46"]},
+        {cap:"верх", bar:[18,82,10], head:[50,19,6.5], s:["43,30 57,30","50,30 50,54 50,74"], a:["38,11 31,25 43,30","62,11 69,25 57,30"]}
+      ],
+      do:["Хват чуть шире плеч, большой палец обхватывает перекладину.",
+          "До начала движения опусти плечи вниз, «от ушей» — тянуть надо не с расслабленных плеч.",
+          "Веди локти вниз к рёбрам, а не просто сгибай руки.",
+          "Опускайся под контролем и оставляй 1–2 повтора в запасе."],
+      err:["Раскачка и рывок корпусом.","Работа до полного отказа — на этой программе она не нужна."],
+      easy:"Негативные повторы: запрыгни или встань в верхнюю точку и опускайся 3–5 секунд." },
+
+    { t:"Ягодичный мост", w:"Силовая A",
+      poses:[
+        {cap:"низ",  g:91, head:[14,82,6], s:["23,86 50,86"], a:["50,86 66,70 78,89"]},
+        {cap:"верх", g:91, head:[14,82,6], s:["23,86 50,66"], a:["50,66 66,66 78,89"]}
+      ],
+      do:["Лёжа на спине, стопы на ширине таза, пятки примерно под коленями.",
+          "Толкайся пятками и поднимай таз именно ягодицами.",
+          "В верхней точке коротко, на секунду, сожми ягодицы.",
+          "Рёбра остаются опущенными — поясницу не переразгибай."],
+      err:["Подъём за счёт прогиба в пояснице вместо работы ягодиц.","Стопы слишком далеко — тогда включается задняя поверхность бедра."],
+      easy:"Уменьши амплитуду: поднимай таз ниже, но с тем же коротким сжатием наверху." },
+
+    { t:"Планка", w:"Силовая A",
+      poses:[
+        {cap:"положение", g:92, head:[18,54,6], s:["28,58 28,88 44,88"], a:["28,58 58,68 74,77 88,88"]}
+      ],
+      do:["Локти строго под плечами, предплечья лежат на полу.",
+          "Тело одной линией: макушка, таз, пятки.",
+          "Живот слегка втянут, ягодицы напряжены, таз чуть подкручен.",
+          "Дыши спокойно. Задержал дыхание — значит, слишком тяжело, сократи время."],
+      err:["Таз проваливается вниз или уходит вверх домиком.","Голова запрокинута, взгляд вперёд — смотри в пол."],
+      easy:"С колен или руки на диван. Двадцать секунд ровно полезнее сорока вкривь." },
+
+    { t:"Боковая планка", w:"Силовая Б",
+      poses:[
+        {cap:"положение", g:92, head:[16,51,6], s:["26,61 26,88 42,90","26,61 31,30"], a:["26,61 57,75 88,89"]}
+      ],
+      do:["Локоть строго под плечом, предплечье направлено вперёд.",
+          "Таз поднят, тело одной линией от плеча до стопы.",
+          "Корпус не заваливается ни вперёд, ни назад.",
+          "Верхняя рука вверх или на поясе — как удобнее."],
+      err:["Таз провисает к полу.","Корпус разворачивается лицом вниз."],
+      easy:"Опора на колени, голени согнуты назад — нагрузка сразу падает примерно вдвое." },
+
+    { t:"Обратные выпады", w:"Силовая Б",
+      poses:[
+        {cap:"старт", g:90, head:[49,15,6], s:["49,22 49,51","49,28 60,43 62,58"], a:["49,51 49,71 49,90","49,51 52,71 55,90"]},
+        {cap:"выпад", g:90, head:[48,17,6], s:["48,24 48,53","48,27 54,41 56,53"], a:["48,53 48,74 48,90","48,53 70,84 86,88"]}
+      ],
+      do:["Шаг делается назад, а не вперёд — так спокойнее для колена.",
+          "Корпус почти вертикальный, вес в основном на передней ноге.",
+          "Заднее колено опускается вниз почти до пола, но не бьётся об него.",
+          "Переднее колено примерно над серединой стопы."],
+      err:["Наклон корпуса вперёд.","Слишком короткий шаг назад — тогда переднее колено уезжает далеко за носок."],
+      easy:"Держись рукой за стену или спинку стула: это убирает половину сложности с равновесием." },
+
+    { t:"Bird Dog", w:"Силовая Б",
+      poses:[
+        {cap:"собрано", g:88, head:[28,60,6], s:["39,50 66,52","39,50 39,86","66,52 75,86","39,50 32,56"], a:["39,50 31,70","66,52 76,72"]},
+        {cap:"вытянуто", g:88, head:[28,60,6], s:["39,50 66,52","39,50 39,86","66,52 75,86","39,50 32,56"], a:["39,50 13,42","66,52 92,44"]}
+      ],
+      do:["Ладони под плечами, колени под тазом.",
+          "Одновременно вытяни противоположные руку и ногу до линии тела.",
+          "Таз остаётся неподвижным — как будто на пояснице стоит стакан воды.",
+          "Медленно: две секунды туда, две обратно."],
+      err:["Нога поднимается выше спины, и поясница прогибается.","Корпус разворачивается вслед за ногой."],
+      easy:"Сначала только рука, потом только нога. Вместе — когда таз перестанет гулять." },
+
+    { t:"Dead Bug", w:"Силовая Б",
+      poses:[
+        {cap:"исходное", g:90, head:[15,84,6], s:["23,84 60,84","28,84 28,52","60,84 64,56 82,56"], a:["28,84 30,54","60,84 64,60"]},
+        {cap:"опускание", g:90, head:[15,84,6], s:["23,84 60,84","28,84 28,52","60,84 64,56 82,56"], a:["28,84 8,70","60,84 88,76"]}
+      ],
+      do:["Лёжа на спине: руки вверх, колени над тазом, голени параллельно полу.",
+          "Поясница мягко прижата к полу и остаётся прижатой всё движение.",
+          "Опускай противоположные руку и ногу, не касаясь ими пола.",
+          "Выдох — на движении вниз."],
+      err:["Поясница отрывается от пола — верный знак, что амплитуда велика."],
+      easy:"Опускай только ногу, руки оставь неподвижными. Это то же упражнение, просто вдвое проще." },
+
+    { t:"Кошка-корова", w:"Мобильность и восстановление",
+      poses:[
+        {cap:"кошка",  g:88, head:[29,61,6], s:["38,52 38,86","66,52 75,86"], ps:["M38,52 Q52,30 66,52"]},
+        {cap:"корова", g:88, head:[29,44,6], s:["38,52 38,86","66,52 75,86"], ps:["M38,52 Q52,72 66,52"]}
+      ],
+      do:["На четвереньках, ладони под плечами, колени под тазом.",
+          "Выдох — округляешь спину, подбородок идёт к груди.",
+          "Вдох — мягко раскрываешь грудную клетку, таз разворачивается.",
+          "Движение проходит по всему позвоночнику, а не только в пояснице."],
+      err:["Резкие движения и попытка прогнуться максимально.","Работает только поясница, грудной отдел стоит на месте."],
+      easy:"Уменьши амплитуду вдвое. Это разминка, а не растяжка — тянуть здесь ничего не нужно." },
+
+    { t:"«Открытая книга»", w:"Мобильность и восстановление",
+      poses:[
+        {cap:"закрыто", g:84, head:[14,70,6], s:["24,70 52,74","52,74 71,63 87,72","24,70 44,62"], a:["24,70 44,61"], hp:["M44,60 Q30,40 15,46"]},
+        {cap:"открыто", g:84, head:[14,70,6], s:["24,70 52,74","52,74 71,63 87,72","24,70 44,62"], a:["24,70 13,46"], hp:["M44,60 Q30,40 15,46"]}
+      ],
+      do:["Лёжа на боку, колени согнуты примерно под 90° и лежат друг на друге.",
+          "Нижняя рука придерживает колени, чтобы таз не поворачивался следом.",
+          "Верхняя рука медленно открывается назад, за ней разворачивается грудная клетка.",
+          "Дойди до комфортного предела и подыши там 2–3 вдоха."],
+      err:["Таз и колени уезжают вслед за рукой — тогда крутится поясница, а не грудной отдел."],
+      easy:"Подложи подушку под колени: так таз фиксируется сам собой." },
+
+    { t:"«Снежный ангел» лёжа", w:"Мобильность и восстановление",
+      poses:[
+        {cap:"вниз", head:[50,17,7], s:["50,25 50,60","50,60 42,88","50,60 58,88"], a:["50,31 36,58","50,31 64,58"], hp:["M29,43 Q27,24 42,16","M71,43 Q73,24 58,16"]},
+        {cap:"вверх", head:[50,17,7], s:["50,25 50,60","50,60 42,88","50,60 58,88"], a:["50,31 34,20","50,31 66,20"], hp:["M29,43 Q27,24 42,16","M71,43 Q73,24 58,16"]}
+      ],
+      do:["Лёжа на спине, колени согнуты, стопы на полу.",
+          "Поясница прижата к полу и не прогибается ни на сантиметр.",
+          "Руки скользят по полу от бёдер вверх, к голове.",
+          "Работай только там, где руки не отрываются от пола."],
+      err:["Поясница выгибается, чтобы увести руки дальше — так упражнение теряет смысл."],
+      easy:"Уменьши амплитуду. Это замена Wall Slides: когда подвижность вырастет, вернёмся к стене." },
+
+    { t:"Растяжка сгибателя бедра", w:"Мобильность и восстановление",
+      poses:[
+        {cap:"положение", g:90, head:[44,17,6], s:["44,24 46,52","44,27 50,42 46,55","70,86 88,89"], a:["46,52 30,72 30,90","46,52 70,86"]}
+      ],
+      do:["Одно колено на полу — подложи под него что-нибудь мягкое, другая нога впереди под 90°.",
+          "Слегка подкрути таз: копчик вниз, лобковая кость вверх.",
+          "Корпус вертикальный, затем мягко подай таз вперёд.",
+          "Тянуть должно переднюю поверхность бедра и пах задней ноги."],
+      err:["Прогиб в пояснице вместо подкрутки таза — тогда не тянется ничего."],
+      easy:"Не подавай таз вперёд вообще. Одной подкрутки таза уже достаточно, чтобы появилось натяжение." },
+
+    { t:"Грудь у дверного проёма", w:"Мобильность и восстановление",
+      poses:[
+        {cap:"положение", g:92, frame:[78,6,92], head:[42,19,6], s:["42,26 44,58","44,58 40,90","44,58 50,90"], a:["44,30 70,31 78,15"]}
+      ],
+      do:["Предплечье на косяк, локоть примерно на высоте плеча, угол в локте около 90°.",
+          "Сделай небольшой шаг вперёд и мягко отверни корпус от руки.",
+          "Тянуть должно грудь и переднюю поверхность плеча.",
+          "Тридцать секунд спокойного дыхания, без пружинок и рывков."],
+      err:["Боль или щелчки в самом плечевом суставе — локоть слишком высоко, опусти его ниже плеча."],
+      easy:"Опусти локоть заметно ниже плеча — так тянется мягче и безопаснее." }
+  ];
+
+  function figProps(o){
+    var p = "";
+    if (o.g) p += '<line class="fig-prop" x1="4" y1="' + o.g + '" x2="96" y2="' + o.g + '"/>';
+    if (o.bar) p += '<line class="fig-prop" x1="' + o.bar[0] + '" y1="' + o.bar[2] + '" x2="' + o.bar[1] + '" y2="' + o.bar[2] + '"/>';
+    if (o.frame) p += '<line class="fig-prop" x1="' + o.frame[0] + '" y1="' + o.frame[1] + '" x2="' + o.frame[0] + '" y2="' + o.frame[2] + '"/>';
+    (o.hp || []).forEach(function(d){ p += '<path class="fig-hint" d="' + d + '"/>'; });
+    return p;
+  }
+
+  function figSvg(o){
+    var p = figProps(o);
+    (o.s || []).forEach(function(x){ p += '<polyline class="fig-ink" points="' + x + '"/>'; });
+    (o.a || []).forEach(function(x){ p += '<polyline class="fig-acc" points="' + x + '"/>'; });
+    (o.ps || []).forEach(function(d){ p += '<path class="fig-acc" d="' + d + '"/>'; });
+    if (o.head) p += '<circle class="fig-head" cx="' + o.head[0] + '" cy="' + o.head[1] + '" r="' + (o.head[2] + 1.5) + '"/>';
+    return '<svg viewBox="0 0 100 100" aria-hidden="true">' + p + '</svg>';
+  }
+
+  // две фазы склеиваются в анимацию только при совпадающей структуре
+  function nPts(str){ return str.trim().split(/\s+/).length; }
+  function shapeOf(d){ return d.replace(/[-\d.,]/g, "").replace(/\s+/g, ""); }
+  function canAnimate(a, b){
+    if (!a || !b) return false;
+    if (!!a.head !== !!b.head) return false;
+    var keys = ["s", "a", "ps"], k, i;
+    for (k = 0; k < keys.length; k++){
+      var A = a[keys[k]] || [], B = b[keys[k]] || [];
+      if (A.length !== B.length) return false;
+      for (i = 0; i < A.length; i++){
+        if (keys[k] === "ps"){ if (shapeOf(A[i]) !== shapeOf(B[i])) return false; }
+        else if (nPts(A[i]) !== nPts(B[i])) return false;
+      }
+    }
+    return true;
+  }
+
+  function anim(attr, v0, v1){
+    return '<animate attributeName="' + attr + '" dur="2.8s" repeatCount="indefinite"' +
+           ' calcMode="spline" keyTimes="0;0.5;1" keySplines="0.42 0 0.58 1;0.42 0 0.58 1"' +
+           ' values="' + v0 + ';' + v1 + ';' + v0 + '"/>';
+  }
+
+  function figSvgAnim(p0, p1){
+    var p = figProps(p0);
+    (p0.s || []).forEach(function(x, i){
+      p += '<polyline class="fig-ink" points="' + x + '">' + anim("points", x, p1.s[i]) + '</polyline>';
+    });
+    (p0.a || []).forEach(function(x, i){
+      p += '<polyline class="fig-acc" points="' + x + '">' + anim("points", x, p1.a[i]) + '</polyline>';
+    });
+    (p0.ps || []).forEach(function(d, i){
+      p += '<path class="fig-acc" d="' + d + '">' + anim("d", d, p1.ps[i]) + '</path>';
+    });
+    if (p0.head){
+      p += '<circle class="fig-head" cx="' + p0.head[0] + '" cy="' + p0.head[1] + '" r="' + (p0.head[2] + 1.5) + '">' +
+           anim("cx", p0.head[0], p1.head[0]) + anim("cy", p0.head[1], p1.head[1]) + '</circle>';
+    }
+    return '<svg viewBox="0 0 100 100" aria-hidden="true">' + p + '</svg>';
+  }
+
+  function buildTech(){
+    var host = document.getElementById("ex-list");
+    if (!host) return;
+    var html = "";
+    for (var i = 0; i < EX.length; i++){
+      var e = EX[i], poses = "";
+      if (e.poses.length === 2 && canAnimate(e.poses[0], e.poses[1])){
+        poses = '<div class="pose anim">' + figSvgAnim(e.poses[0], e.poses[1]) +
+                '<div class="pose-cap">' + e.poses[0].cap + " ⇄ " + e.poses[1].cap + '</div></div>';
+      } else {
+        for (var j = 0; j < e.poses.length; j++){
+          poses += '<div class="pose">' + figSvg(e.poses[j]) +
+                   '<div class="pose-cap">' + e.poses[j].cap + '</div></div>';
+        }
+      }
+      var dos = e.do.map(function(x){ return "<li>" + x + "</li>"; }).join("");
+      var errs = e.err.map(function(x){ return "<li>" + x + "</li>"; }).join("");
+      html += '<div class="ex">' +
+        '<div class="ex-head"><span class="ex-title">' + e.t + '</span><span class="ex-where">' + e.w + '</span></div>' +
+        '<div class="poses">' + poses + '</div>' +
+        '<div class="ex-block"><span class="k">Как делать</span><ul>' + dos + '</ul></div>' +
+        '<div class="ex-block err"><span class="k">Частые ошибки</span><ul>' + errs + '</ul></div>' +
+        '<div class="ex-block"><span class="k">Если тяжело</span><p>' + e.easy + '</p></div>' +
+        '</div>';
+    }
+    host.innerHTML = html;
+  }
+
+
+  // ---------- пауза для схем ----------
+  var animOn = true;
+  function setAnimPlaying(play){
+    animOn = play;
+    var svgs = document.querySelectorAll("#ex-list svg");
+    for (var i = 0; i < svgs.length; i++){
+      try { play ? svgs[i].unpauseAnimations() : svgs[i].pauseAnimations(); } catch(e){}
+    }
+    var b = document.getElementById("anim-toggle");
+    if (b){
+      b.textContent = play ? "Остановить движение" : "Запустить движение";
+      b.setAttribute("aria-pressed", play ? "true" : "false");
+    }
+    try { localStorage.setItem("min-doza-anim", play ? "1" : "0"); } catch(e){}
+  }
+  function initAnim(){
+    var b = document.getElementById("anim-toggle");
+    if (!b) return;
+    b.addEventListener("click", function(){ setAnimPlaying(!animOn); });
+    var reduced = false, saved = null;
+    try { reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch(e){}
+    try { saved = localStorage.getItem("min-doza-anim"); } catch(e){}
+    setAnimPlaying(saved === null ? !reduced : saved === "1");
+  }
+
+  // ---------- таймер ----------
+  var TCIRC = 2 * Math.PI * 43;
+  var tSec = 20, tLeft = 20, tRun = false, tId = null, tEnd = 0, tLastBeep = 0, wakeRef = null, actx = null;
+
+  function beep(freq, dur, vol){
+    try {
+      if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
+      if (actx.state === "suspended") actx.resume();
+      var o = actx.createOscillator(), g = actx.createGain(), t = actx.currentTime;
+      o.type = "sine"; o.frequency.value = freq;
+      o.connect(g); g.connect(actx.destination);
+      g.gain.setValueAtTime(vol, t);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      o.start(t); o.stop(t + dur + 0.03);
+    } catch(e){}
+  }
+  function buzz(pattern){ try { if (navigator.vibrate) navigator.vibrate(pattern); } catch(e){} }
+  function wakeOn(){
+    try {
+      if (navigator.wakeLock && !wakeRef){
+        navigator.wakeLock.request("screen").then(function(w){ wakeRef = w; }).catch(function(){});
+      }
+    } catch(e){}
+  }
+  function wakeOff(){ try { if (wakeRef){ wakeRef.release(); wakeRef = null; } } catch(e){} }
+
+  function drawTimer(){
+    var num = document.getElementById("dial-num");
+    if (!num) return;
+    num.textContent = String(Math.ceil(tLeft));
+    var frac = tSec ? (tLeft / tSec) : 0;
+    document.getElementById("dial-bar").style.strokeDashoffset = String(TCIRC * (1 - frac));
+    document.getElementById("dial").classList.toggle("last", tRun && tLeft <= 5);
+  }
+  function setBtn(label){ document.getElementById("t-start").textContent = label; }
+  function stopTick(){ if (tId){ clearInterval(tId); tId = null; } }
+
+  function tTick(){
+    tLeft = Math.max(0, (tEnd - Date.now()) / 1000);
+    var whole = Math.ceil(tLeft);
+    if (whole <= 3 && whole >= 1 && whole !== tLastBeep){ tLastBeep = whole; beep(880, 0.07, 0.10); }
+    drawTimer();
+    if (tLeft <= 0) tFinish();
+  }
+  function tFinish(){
+    stopTick(); tRun = false; tLeft = 0; drawTimer();
+    setBtn("Ещё раз"); wakeOff();
+    beep(523, 0.55, 0.22); buzz([220, 90, 220]);
+  }
+  function tToggle(){
+    if (tRun){ stopTick(); tRun = false; setBtn("Продолжить"); wakeOff(); drawTimer(); return; }
+    if (tLeft <= 0) tLeft = tSec;
+    tEnd = Date.now() + tLeft * 1000;
+    tLastBeep = 0; tRun = true;
+    setBtn("Пауза"); wakeOn();
+    beep(660, 0.09, 0.12);
+    tId = setInterval(tTick, 100);
+    drawTimer();
+  }
+  function tReset(){ stopTick(); tRun = false; tLeft = tSec; setBtn("Старт"); wakeOff(); drawTimer(); }
+
+  function initTimer(){
+    if (!document.getElementById("t-start")) return;
+    document.getElementById("t-start").addEventListener("click", tToggle);
+    document.getElementById("t-reset").addEventListener("click", tReset);
+    document.getElementById("presets").addEventListener("click", function(ev){
+      var b = ev.target.closest ? ev.target.closest(".preset") : null;
+      if (!b) return;
+      tSec = parseInt(b.getAttribute("data-sec"), 10);
+      var all = this.querySelectorAll(".preset");
+      for (var i = 0; i < all.length; i++){
+        all[i].setAttribute("aria-pressed", all[i] === b ? "true" : "false");
+      }
+      tReset();
+    });
+    document.addEventListener("visibilitychange", function(){
+      if (document.visibilityState === "visible" && tRun) wakeOn();
+    });
+    drawTimer();
+  }
+
   // ---------- вкладки ----------
-  var TABS = ["today","work","food","rules","energy"];
+  var TABS = ["today","work","tech","food","rules","energy"];
   var TABKEY = "min-doza-tab";
 
   function showTab(name, scroll){
@@ -1203,6 +1898,9 @@
   loadLocal();
   buildGrid();
   buildCards();
+  buildTech();
+  initAnim();
+  initTimer();
   render();
   showTab(initialTab(), false);
 
