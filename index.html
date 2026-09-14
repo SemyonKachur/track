@@ -815,7 +815,7 @@
   <footer class="foot">
     <div class="eyebrow">Границы</div>
     <p>Это не медицинская рекомендация. Резкая боль, онемение, покалывание, ощущение нестабильности в суставе — повод остановиться и показаться специалисту, а не «доработать через терпение». Хруст в плече без боли сам по себе не проблема, но специально его провоцировать не нужно.</p>
-    <p>Страницу можно открыть с любого устройства по ссылке, вход не нужен. Отметки хранятся в том браузере, где ты их поставил: <span id="sync">сохраняется в этом браузере</span>. Отмечай с одного устройства — с телефона, — а планшет и компьютер используй для чтения.</p>
+    <p>Страница открывается с любого устройства по ссылке, вход не нужен. Отметки общие: сделал на телефоне — видно на планшете и компьютере. Копия всегда остаётся и в самом браузере, так что без интернета страница продолжает работать. Состояние: <span id="sync">сохраняется только в этом браузере</span>.</p>
   </footer>
 </div>
 
@@ -900,15 +900,10 @@
     var payload = JSON.stringify(state.days);
     if (payload === lastPushed) return;
     lastPushed = payload;
-    setSync("Сохраняю…");
-    fetch(REMOTE_URL, {
-      method: "PUT",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({ days: state.days, updatedAt: new Date().toISOString() })
-    }).then(function(r){
-      if (!r.ok) throw new Error("http");
-      setSync("Синхронизировано");
-    }).catch(function(){ lastPushed = ""; setSync("Нет связи — сохранено на устройстве"); });
+    setSync("сохраняю…");
+    remoteWrite(state.days)
+      .then(function(){ setSync("синхронизировано со всеми устройствами"); })
+      .catch(function(){ lastPushed = ""; setSync("нет связи — сохранено на этом устройстве"); });
   }
   function persist(){ saveLocal(); pushRemote(); }
   function setSync(text){
@@ -1211,12 +1206,27 @@
   render();
   showTab(initialTab(), false);
 
-  // Хранилище отметок.
-  // REMOTE_URL пуст — отметки живут в браузере этого устройства.
-  // Если задать адрес JSON-хранилища, страница начнёт синхронизироваться
-  // между устройствами (работает только на внешнем хостинге: на claude.ai
-  // запросы наружу заблокированы политикой безопасности страницы).
-  var REMOTE_URL = "";
+  // Общее хранилище отметок: одна запись в бесплатном JSON-хранилище.
+  // Браузер каждого устройства читает её при открытии и пишет после отметки,
+  // слияние идёт по времени изменения. Локальная копия в браузере остаётся
+  // основной: если хранилище недоступно, страница продолжает работать.
+  // На claude.ai запросы наружу заблокированы политикой безопасности —
+  // там синхронизации не будет, и это нормально.
+  var REMOTE_URL = "https://api.restful-api.dev/objects/ff808181a09d98f701a09e6caafc0139";
+  var REMOTE_NAME = "mindoza-46nhmf1j";
+
+  function remoteRead(){
+    return fetch(REMOTE_URL, {cache:"no-store"})
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(j){ return (j && j.data && j.data.days) ? j.data.days : null; });
+  }
+  function remoteWrite(days){
+    return fetch(REMOTE_URL, {
+      method: "PUT",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({ name: REMOTE_NAME, data: { days: days, updatedAt: new Date().toISOString() } })
+    }).then(function(r){ if (!r.ok) throw new Error("http " + r.status); });
+  }
 
   function has(o, k){ return Object.prototype.hasOwnProperty.call(o, k); }
 
@@ -1239,30 +1249,27 @@
     return { changed: changed, pushUp: pushUp };
   }
 
+  function syncNow(first){
+    if (!REMOTE_URL) return;
+    remoteRead().then(function(remote){
+      var res = mergeRemote(remote);
+      if (res.changed){ saveLocal(); render(); }
+      if (res.pushUp) pushRemote();
+      else setSync("синхронизировано со всеми устройствами");
+    }).catch(function(){
+      setSync("нет связи — сохраняю на этом устройстве");
+    });
+  }
+
   if (REMOTE_URL){
-    setSync("Подключаюсь…");
-    fetch(REMOTE_URL, {cache:"no-store"})
-      .then(function(r){ return r.ok ? r.json() : null; })
-      .then(function(data){
-        var res = mergeRemote(data && data.days ? data.days : null);
-        if (res.changed){ saveLocal(); render(); }
-        if (res.pushUp) pushRemote(); else setSync("Синхронизировано");
-      })
-      .catch(function(){ setSync("Нет связи — сохраняю на устройстве"); });
-    // подтягиваем изменения с других устройств при возврате на вкладку
+    setSync("подключаюсь…");
+    syncNow(true);
+    // подтягиваем чужие изменения при возврате на вкладку
     document.addEventListener("visibilitychange", function(){
-      if (document.visibilityState !== "visible" || !REMOTE_URL) return;
-      fetch(REMOTE_URL, {cache:"no-store"})
-        .then(function(r){ return r.ok ? r.json() : null; })
-        .then(function(data){
-          var res = mergeRemote(data && data.days ? data.days : null);
-          if (res.changed){ saveLocal(); render(); }
-          if (res.pushUp) pushRemote();
-        })
-        .catch(function(){});
+      if (document.visibilityState === "visible") syncNow(false);
     });
   } else {
-    setSync("сохраняется в этом браузере");
+    setSync("сохраняется только в этом браузере");
   }
 })();
 </script>
