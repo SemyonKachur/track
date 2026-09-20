@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="Трекер утренних тренировок, техники упражнений, питания и энергии на четыре недели.">
+<meta name="description" content="Трекер утренних тренировок, техники упражнений, питания и энергии.">
 <meta name="theme-color" content="#EEF1EC" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0E1512" media="(prefers-color-scheme: dark)">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -295,6 +295,43 @@
   .hack p{font-size:.9rem;color:var(--ink-soft)}
   .hack strong{color:var(--ink)}
 
+  .card-box{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+    box-shadow:var(--shadow);padding:16px 18px;display:flex;flex-direction:column;gap:12px;
+  }
+  .card-box h3{font-size:1.05rem}
+  .box-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap}
+  .box-tag{font-family:var(--f-mono);font-size:.63rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .box-tag.acc{color:var(--accent)}
+  .card-box p{font-size:.92rem;color:var(--ink-soft);max-width:64ch}
+  .counters{display:flex;flex-wrap:wrap;gap:8px}
+  .counter{
+    display:flex;flex-direction:column;gap:2px;
+    background:var(--surface-2);border-radius:7px;padding:9px 13px;min-width:112px;
+  }
+  .counter .n{font-family:var(--f-display);font-size:1.35rem;line-height:1;font-variant-numeric:tabular-nums}
+  .counter .c{font-family:var(--f-mono);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .counter.over .n{color:var(--signal)}
+  .counter.good .n{color:var(--accent)}
+  .measure-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .measure-row input{
+    font:inherit;font-family:var(--f-mono);font-size:1rem;width:92px;
+    padding:9px 11px;border-radius:7px;
+    border:1px solid var(--line-strong);background:var(--paper);color:var(--ink);
+  }
+  .measure-row input:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
+  .verdict{
+    border-left:3px solid var(--accent);background:var(--surface-2);
+    border-radius:0 7px 7px 0;padding:10px 13px;font-size:.9rem;color:var(--ink-soft);
+  }
+  .verdict.warn{border-left-color:var(--signal)}
+  .verdict b{color:var(--ink)}
+  .evening{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:14px}
+  .daily-rules{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--line)}
+  .drule{display:grid;grid-template-columns:1.7rem 1fr;gap:12px;padding:13px 0;border-bottom:1px solid var(--line);align-items:start}
+  .drule .n{font-family:var(--f-mono);font-size:.72rem;color:var(--accent);padding-top:3px}
+  .drule h3{font-size:.96rem;margin-bottom:2px}
+  .drule p{font-size:.89rem;color:var(--ink-soft)}
   /* ---------- stats ---------- */
   .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
   .stat{background:var(--surface);padding:14px 14px}
@@ -534,6 +571,14 @@
         <button class="mark" data-lvl="norm" aria-pressed="false">Сделал норму</button>
         <button class="mark" data-lvl="plus" aria-pressed="false">Сделал больше</button>
       </div>
+      <div class="evening">
+        <div class="timer-label">Вчера вечером — отметь, если было</div>
+        <div class="habit-row" id="t-evening">
+          <button class="chip" type="button" data-ev="beer" aria-pressed="false">Пиво</button>
+          <button class="chip" type="button" data-ev="salty" aria-pressed="false">Солёные закуски</button>
+        </div>
+      </div>
+
       <div class="session" id="session">
         <div class="timer-label">Тренировка</div>
         <div class="session-row" id="s-idle">
@@ -564,6 +609,30 @@
         </div>
       </div>
     </div>
+  </div>
+
+<!-- EXPERIMENT -->
+  <div class="card-box" id="exp">
+    <div class="box-head">
+      <h3>Что мы сейчас проверяем</h3>
+      <span class="box-tag acc" id="exp-week">Неделя 1 из 3</span>
+    </div>
+    <p id="exp-rule">Один вечер с пивом в неделю вместо трёх, и в этот вечер — без солёных закусок. Всё остальное — тренировки, завтраки, шаги — оставляем как есть, иначе не поймём, что сработало.</p>
+    <div class="counters" id="exp-counters"></div>
+    <div class="verdict" id="exp-verdict"></div>
+  </div>
+
+<!-- MEASURE -->
+  <div class="card-box" id="measure">
+    <div class="box-head">
+      <h3>Куда движемся</h3>
+      <span class="box-tag" id="m-when">Замер раз в неделю</span>
+    </div>
+    <div class="measure-row">
+      <input type="number" id="waist-in" inputmode="decimal" step="0.5" min="50" max="160" placeholder="92" aria-label="Талия в сантиметрах">
+      <button class="btn" type="button" id="waist-save">Записать талию</button>
+    </div>
+    <div class="verdict" id="m-verdict"></div>
   </div>
 
 <!-- STATS -->
@@ -708,6 +777,36 @@
     <div class="callout">
       <div class="k">Три завтрака, каждый до 10 минут</div>
       <p><strong>Сырники:</strong> 200 г творога + 1 яйцо + 2 ст. л. муки, без сахара в тесте. <strong>Омлет:</strong> 3 яйца + помидор/шпинат + кусок хлеба. <strong>Быстрый:</strong> 200 г творога или греческого йогурта + ягоды + горсть орехов. Кофе — к любому из них, но после, а не вместо.</p>
+    </div>
+  </section>
+
+<!-- DAILY RULES -->
+  <section>
+    <div class="sec-head">
+      <h2>Что делать каждый день</h2>
+      <p class="prose">Пять пунктов. Не диета, считать ничего не нужно — этого достаточно, чтобы появился тот самый небольшой дефицит, из-за которого уходит талия.</p>
+    </div>
+    <div class="daily-rules">
+      <div class="drule"><span class="n">01</span><div>
+        <h3>Завтрак с белком, каждый день</h3>
+        <p>Любой из рецептов ниже. Главное — не кофе с печеньем. Ориентир 25–30 г белка, это одна порция творога, три яйца или сырники.</p>
+      </div></div>
+      <div class="drule"><span class="n">02</span><div>
+        <h3>Обед не пропускать</h3>
+        <p>Миска за семь минут: готовая крупа + банка тунца или фасоли + замороженные овощи. Поставь таймер на телефоне, иначе обед потеряется.</p>
+      </div></div>
+      <div class="drule"><span class="n">03</span><div>
+        <h3>Ужин: белок и овощи, гарнира на треть меньше</h3>
+        <p>Мясо, рыба или яйца плюс овощи — без изменений. Меняется только количество риса, картошки или макарон: накладывай примерно на треть меньше обычного.</p>
+      </div></div>
+      <div class="drule"><span class="n">04</span><div>
+        <h3>После ужина — ничего</h3>
+        <p>Кухня закрыта. Если действительно голоден — творог или греческий йогурт, без добавок. Это самый жёсткий пункт списка и самый действенный.</p>
+      </div></div>
+      <div class="drule"><span class="n">05</span><div>
+        <h3>Пиво — один вечер в неделю, без солёного</h3>
+        <p>Не отменяется, а сокращается: один вечер вместо трёх. Закуски важнее самого пива — в чипсах и орешках калорий больше, а соль потом даёт отёк и портит замер талии.</p>
+      </div></div>
     </div>
   </section>
 
@@ -1514,7 +1613,14 @@
     document.getElementById("pulse-text").textContent = r[2];
   }
 
-  function render(){ var st = computeStats(); renderToday(); renderBoard(); renderStats(st); renderPulse(st); if (document.getElementById("s-start")) sRender(); }
+  function render(){
+    var st = computeStats();
+    renderToday(); renderBoard(); renderStats(st); renderPulse(st);
+    if (document.getElementById("t-evening")) renderEvening();
+    if (document.getElementById("exp")) renderExp();
+    if (document.getElementById("measure")) renderWaist();
+    if (document.getElementById("s-start")) sRender();
+  }
 
   // ---------- events ----------
   document.getElementById("t-marks").addEventListener("click", function(ev){
@@ -2023,6 +2129,152 @@
     sRender();
   }
 
+
+  // ---------- эксперимент «вечера» и замеры талии ----------
+  var EXP_START = new Date(2026, 8, 21); // понедельник 21 сентября
+  var EXP_DAYS = 21;
+  var BEER_LIMIT = 1;
+
+  function mondayOf(d){
+    var x = new Date(d.getTime());
+    var wd = (x.getDay() + 6) % 7; // 0 = понедельник
+    x.setDate(x.getDate() - wd);
+    return x;
+  }
+  function eveningOf(key){
+    var e = state.days[key];
+    return (e && e.evening) ? e.evening : {};
+  }
+  function waistList(){
+    var out = [], k;
+    for (k in state.days){
+      if (!Object.prototype.hasOwnProperty.call(state.days, k)) continue;
+      if (state.days[k] && typeof state.days[k].waist === "number") out.push([k, state.days[k].waist]);
+    }
+    out.sort(function(a, b){ return a[0] < b[0] ? -1 : 1; });
+    return out;
+  }
+
+  function renderEvening(){
+    var key = document.getElementById("todayCard").getAttribute("data-key");
+    var ev = eveningOf(key);
+    var chips = document.getElementById("t-evening").querySelectorAll(".chip");
+    for (var i = 0; i < chips.length; i++){
+      var k = chips[i].getAttribute("data-ev");
+      chips[i].setAttribute("aria-pressed", ev[k] ? "true" : "false");
+    }
+  }
+
+  function renderExp(){
+    var today = todayLocal();
+    var dayNo = Math.floor((today - EXP_START) / 86400000) + 1;
+    var weekNo = Math.max(1, Math.min(3, Math.ceil(dayNo / 7)));
+    var left = EXP_DAYS - dayNo + 1;
+
+    var wk = mondayOf(today), beer = 0, salty = 0, i;
+    for (i = 0; i < 7; i++){
+      var ev = eveningOf(iso(addDays(wk, i)));
+      if (ev.beer) beer++;
+      if (ev.salty) salty++;
+    }
+
+    var head = document.getElementById("exp-week");
+    if (dayNo < 1) head.textContent = "Старт в понедельник";
+    else if (dayNo > EXP_DAYS) head.textContent = "Три недели закончились";
+    else head.textContent = "Неделя " + weekNo + " из 3 · осталось " + left + " " + plural(left, "день", "дня", "дней");
+
+    document.getElementById("exp-counters").innerHTML =
+      '<div class="counter ' + (beer > BEER_LIMIT ? "over" : "good") + '"><span class="n">' + beer + " из " + BEER_LIMIT +
+      '</span><span class="c">вечеров с пивом</span></div>' +
+      '<div class="counter ' + (salty > 0 ? "over" : "good") + '"><span class="n">' + salty +
+      '</span><span class="c">вечеров с солёным</span></div>';
+
+    var v = document.getElementById("exp-verdict"), warn = false, txt;
+    if (dayNo < 1){
+      txt = "Начинаем в понедельник. Сегодня ничего считать не нужно.";
+    } else if (beer > BEER_LIMIT){
+      warn = true;
+      txt = "<b>Лимит недели превышен.</b> Не страшно и не повод бросать — просто отметь это как есть, в воскресенье посмотрим, как неделя повлияла на талию. Врать себе тут бессмысленно: испортится только вывод, а не оценка.";
+    } else if (beer === BEER_LIMIT){
+      txt = "Норма недели использована. До понедельника вечера без пива — и по калориям, и по качеству сна это как раз то, что мы проверяем.";
+    } else {
+      txt = "Запас на неделю: <b>" + (BEER_LIMIT - beer) + "</b>. Отмечать нужно утром, за вчерашний вечер — две кнопки в карточке дня выше.";
+    }
+    v.className = "verdict" + (warn ? " warn" : "");
+    v.innerHTML = txt;
+  }
+
+  function renderWaist(){
+    var list = waistList();
+    var v = document.getElementById("m-verdict");
+    var when = document.getElementById("m-when");
+    var today = todayLocal();
+    var isSunday = today.getDay() === 0;
+
+    when.textContent = isSunday ? "Сегодня день замера" : "Замер по воскресеньям";
+
+    if (!list.length){
+      v.className = "verdict";
+      v.innerHTML = "Пока ни одного замера. Измерь талию на уровне пупка, утром натощак, и запиши — это будет точка отсчёта. Цель — <b>85 см</b>.";
+      return;
+    }
+    var first = list[0], last = list[list.length - 1];
+    var cur = last[1];
+    var toGoal = Math.round((cur - 85) * 10) / 10;
+    var head = "Талия <b>" + cur + " см</b>. До цели " + (toGoal > 0 ? toGoal + " см" : "дошли") + ". ";
+
+    if (list.length === 1){
+      v.className = "verdict";
+      v.innerHTML = head + "Это точка отсчёта. Направление будет видно со второго замера — в ближайшее воскресенье.";
+      return;
+    }
+    var diff = Math.round((cur - first[1]) * 10) / 10;
+    var warn = false, tail;
+    if (diff <= -1){
+      tail = "С начала ушло <b>" + Math.abs(diff) + " см</b>. Это работает — ничего не меняем, продолжаем.";
+    } else if (diff >= 1){
+      warn = true;
+      tail = "С начала прибавилось <b>" + diff + " см</b>. Разберём в воскресенье: скорее всего дело в вечерах, а не в тренировках.";
+    } else {
+      tail = "С начала изменение " + (diff > 0 ? "+" : "") + diff + " см — это в пределах погрешности. Нормально: заметное движение появляется с третьей недели, раньше видна в основном вода.";
+    }
+    v.className = "verdict" + (warn ? " warn" : "");
+    v.innerHTML = head + tail;
+  }
+
+  function initExtras(){
+    var evBox = document.getElementById("t-evening");
+    if (evBox){
+      evBox.addEventListener("click", function(ev){
+        var b = ev.target.closest ? ev.target.closest(".chip") : null;
+        if (!b) return;
+        var key = document.getElementById("todayCard").getAttribute("data-key");
+        var e = entry(key);
+        if (!e.evening) e.evening = {};
+        var k = b.getAttribute("data-ev");
+        e.evening[k] = !e.evening[k];
+        stamp(e);
+        persist();
+        render();
+      });
+    }
+    var save = document.getElementById("waist-save");
+    if (save){
+      save.addEventListener("click", function(){
+        var inp = document.getElementById("waist-in");
+        var val = parseFloat((inp.value || "").replace(",", "."));
+        if (!(val > 40 && val < 200)) { inp.focus(); return; }
+        var key = document.getElementById("todayCard").getAttribute("data-key");
+        var e = entry(key);
+        e.waist = Math.round(val * 10) / 10;
+        stamp(e);
+        persist();
+        inp.value = "";
+        render();
+      });
+    }
+  }
+
   // ---------- вкладки ----------
   var TABS = ["today","work","tech","food","rules","energy"];
   var TABKEY = "min-doza-tab";
@@ -2079,6 +2331,7 @@
   initAnim();
   initTimer();
   initSession();
+  initExtras();
   render();
   showTab(initialTab(), false);
 
