@@ -1218,13 +1218,17 @@
   "use strict";
 
   var START = new Date(2026, 8, 14); // Пн, 14 сентября 2026
-  // Неделя 1 — как было. С недели 2 силовые переехали на пн/ср/сб:
-  // пятничное утро занято музыкальной школой, и это не лечится мотивацией.
+  // Недели 1 и 2 оставлены как были прожиты — историю не переписываем.
+  // Правка от 27 сентября, с недели 3. Два утра заняты структурно,
+  // и это не лечится мотивацией: пятница — музыкальная школа,
+  // суббота — дома все спят, нет места, а дальше нет времени.
+  // Поэтому на пятницу и субботу встают два самых нетребовательных дня недели,
+  // а третья силовая переезжает на четверг. Объём не менялся.
   var WEEKS = [
     ["A","Л","Б","В","A","Д","О"],
     ["Б","Л","A","В","Д","Б","О"],
-    ["A","Л","Б","В","Д","A","О"],
-    ["Б","Л","A","В","Д","Б","О"]
+    ["A","Л","Б","A","В","Д","О"],
+    ["Б","Л","A","Б","В","Д","О"]
   ];
   var WD = ["Пн","Вт","Ср","Чт","Пт","Сб","Вс"];
   var MONTHS = ["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"];
@@ -1305,6 +1309,50 @@
   function setSync(text){
     var el = document.getElementById("sync");
     if (el) el.textContent = text;
+    showSyncBanner(text.indexOf("нет связи") !== -1 ? text : "");
+  }
+
+  // Отметки, которые не доехали до сервера, раньше сообщали об этом одной строкой
+  // в подвале — её никто не читает. Теперь это видно сразу, и данные можно
+  // забрать из браузера одной кнопкой, даже когда синхронизация не работает.
+  var bannerEl = null;
+  function fallbackCopy(payload, btn){
+    var ta = document.createElement("textarea");
+    ta.value = payload;
+    ta.style.cssText = "position:fixed;top:0;left:0;opacity:0";
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); btn.textContent = "Скопировано"; }
+    catch(e){ btn.textContent = "Не вышло"; }
+    document.body.removeChild(ta);
+  }
+  function showSyncBanner(text){
+    if (!text){ if (bannerEl) bannerEl.style.display = "none"; return; }
+    if (!bannerEl){
+      bannerEl = document.createElement("div");
+      bannerEl.style.cssText = "position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#7a2018;color:#fff;font:600 14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding:12px 16px;display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap;text-align:center";
+      var msg = document.createElement("span");
+      msg.id = "syncBannerMsg";
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.textContent = "Скопировать отметки";
+      btn.style.cssText = "background:#fff;color:#7a2018;border:0;border-radius:8px;padding:8px 12px;font:600 14px system-ui,-apple-system,Segoe UI,Roboto,sans-serif;cursor:pointer";
+      btn.onclick = function(){
+        var payload = JSON.stringify({days: state.days});
+        try {
+          navigator.clipboard.writeText(payload).then(
+            function(){ btn.textContent = "Скопировано"; },
+            function(){ fallbackCopy(payload, btn); }
+          );
+        } catch(e){ fallbackCopy(payload, btn); }
+      };
+      bannerEl.appendChild(msg);
+      bannerEl.appendChild(btn);
+      document.body.appendChild(bannerEl);
+    }
+    bannerEl.style.display = "flex";
+    document.getElementById("syncBannerMsg").textContent =
+      "Отметки не уходят на сервер (" + text + "). На этом устройстве они сохранены, с других — не видно.";
   }
   function stamp(e){ e.ts = Date.now(); }
 
