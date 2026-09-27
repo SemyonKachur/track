@@ -1300,59 +1300,76 @@
     var payload = JSON.stringify(state.days);
     if (payload === lastPushed) return;
     lastPushed = payload;
-    setSync("сохраняю…");
+    setSync("сохраняю…", false);
     remoteWrite(state.days)
-      .then(function(){ setSync("синхронизировано со всеми устройствами"); })
-      .catch(function(){ lastPushed = ""; setSync("нет связи — сохранено на этом устройстве"); });
+      .then(function(){ setSync("синхронизировано со всеми устройствами", false); })
+      .catch(function(err){ lastPushed = ""; setSync(String((err && err.message) || err), true); });
   }
   function persist(){ saveLocal(); pushRemote(); }
-  function setSync(text){
+  var syncBad = false, retryTimer = null;
+  function setSync(text, bad){
     var el = document.getElementById("sync");
     if (el) el.textContent = text;
-    showSyncBanner(text.indexOf("нет связи") !== -1 ? text : "");
+    syncBad = !!bad;
+    showSyncBanner(bad ? text : "");
+    if (bad){
+      if (!retryTimer) retryTimer = setInterval(function(){ if (syncBad) syncNow(false); }, 60000);
+    } else if (retryTimer){
+      clearInterval(retryTimer); retryTimer = null;
+    }
   }
 
-  // Отметки, которые не доехали до сервера, раньше сообщали об этом одной строкой
-  // в подвале — её никто не читает. Теперь это видно сразу, и данные можно
-  // забрать из браузера одной кнопкой, даже когда синхронизация не работает.
+  // Раньше сбой синхронизации сообщал о себе одной серой строкой в подвале,
+  // которую никто не читает, и прятал причину. Теперь причина видна целиком,
+  // отправку можно повторить руками, а отметки — забрать одной кнопкой.
   var bannerEl = null;
-  function fallbackCopy(payload, btn){
+  function copyToClipboard(payload, btn){
+    function done(ok){ btn.textContent = ok ? "Скопировано" : "Не вышло"; }
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(payload).then(function(){ done(true); }, function(){ legacyCopy(payload, done); });
+        return;
+      }
+    } catch(e){}
+    legacyCopy(payload, done);
+  }
+  function legacyCopy(payload, done){
     var ta = document.createElement("textarea");
     ta.value = payload;
     ta.style.cssText = "position:fixed;top:0;left:0;opacity:0";
     document.body.appendChild(ta);
     ta.select();
-    try { document.execCommand("copy"); btn.textContent = "Скопировано"; }
-    catch(e){ btn.textContent = "Не вышло"; }
+    var ok = false;
+    try { ok = document.execCommand("copy"); } catch(e){}
     document.body.removeChild(ta);
+    done(ok);
+  }
+  function mkBtn(label){
+    var b = document.createElement("button");
+    b.type = "button";
+    b.textContent = label;
+    b.style.cssText = "background:#fff;color:#7a2018;border:0;border-radius:8px;padding:8px 12px;font:600 14px system-ui,-apple-system,Segoe UI,Roboto,sans-serif;cursor:pointer";
+    return b;
   }
   function showSyncBanner(text){
     if (!text){ if (bannerEl) bannerEl.style.display = "none"; return; }
     if (!bannerEl){
       bannerEl = document.createElement("div");
-      bannerEl.style.cssText = "position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#7a2018;color:#fff;font:600 14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding:12px 16px;display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap;text-align:center";
+      bannerEl.style.cssText = "position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#7a2018;color:#fff;font:600 14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding:12px 16px;display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;text-align:center";
       var msg = document.createElement("span");
       msg.id = "syncBannerMsg";
-      var btn = document.createElement("button");
-      btn.type = "button";
-      btn.textContent = "Скопировать отметки";
-      btn.style.cssText = "background:#fff;color:#7a2018;border:0;border-radius:8px;padding:8px 12px;font:600 14px system-ui,-apple-system,Segoe UI,Roboto,sans-serif;cursor:pointer";
-      btn.onclick = function(){
-        var payload = JSON.stringify({days: state.days});
-        try {
-          navigator.clipboard.writeText(payload).then(
-            function(){ btn.textContent = "Скопировано"; },
-            function(){ fallbackCopy(payload, btn); }
-          );
-        } catch(e){ fallbackCopy(payload, btn); }
-      };
+      var again = mkBtn("Повторить отправку");
+      again.onclick = function(){ again.textContent = "Отправляю…"; lastPushed = ""; syncNow(false); setTimeout(function(){ again.textContent = "Повторить отправку"; }, 2500); };
+      var copy = mkBtn("Скопировать отметки");
+      copy.onclick = function(){ copyToClipboard(JSON.stringify({days: state.days}), copy); };
       bannerEl.appendChild(msg);
-      bannerEl.appendChild(btn);
+      bannerEl.appendChild(again);
+      bannerEl.appendChild(copy);
       document.body.appendChild(bannerEl);
     }
     bannerEl.style.display = "flex";
     document.getElementById("syncBannerMsg").textContent =
-      "Отметки не уходят на сервер (" + text + "). На этом устройстве они сохранены, с других — не видно.";
+      "Отметки не уходят на сервер: " + text + ". На этом устройстве они сохранены, с других — не видно.";
   }
   function stamp(e){ e.ts = Date.now(); }
 
@@ -2392,17 +2409,99 @@
   var REMOTE_URL = "https://api.restful-api.dev/objects/ff808181a09d98f701a09e6caafc0139";
   var REMOTE_NAME = "mindoza-46nhmf1j";
 
+  // Хранилище — бесплатный демо-сервис, и у него жёсткий потолок: тело запроса
+  // больше ~1 КБ он отдаёт как 500. Отметки в обычном JSON перевалили за этот
+  // потолок 20 сентября, и с тех пор ни одна отметка на сервер не уезжала.
+  // Поэтому на сервер уходит компактная строка: один день — около 12 символов,
+  // все четыре недели — примерно 400 байт. В localStorage формат прежний,
+  // так что ошибка в кодировке не может испортить данные на устройстве.
+  var LVLS = ["", "min", "norm", "plus"];
+  var HABS = ["water", "teeth", "table", "protein"];
+  var RPE = { n:"norm", e:"easy", h:"hard" };
+  function b36(n){ return Number(n).toString(36); }
+
+  function encodeDays(days){
+    var out = [], k;
+    var keys = []; for (k in days){ if (has(days, k)) keys.push(k); }
+    keys.sort();
+    for (var i = 0; i < keys.length; i++){
+      var key = keys[i], e = days[key] || {};
+      var parts = key.split("-");
+      var idx = Math.round((new Date(+parts[0], +parts[1] - 1, +parts[2]) - START) / 86400000);
+      if (idx < 0 || isNaN(idx)) continue;
+      var lv = LVLS.indexOf(e.level || ""); if (lv < 0) lv = 0;
+      var hb = 0, h = e.habits || {};
+      for (var j = 0; j < HABS.length; j++){ if (h[HABS[j]]) hb |= (1 << j); }
+      var tm = e.ts ? b36(Math.max(0, Math.round((e.ts - START.getTime()) / 60000))) : "";
+      var w = (typeof e.waist === "number") ? String(e.waist) : "";
+      var ev = "";
+      if (e.evening){
+        if (e.evening.beer === true) ev += "b"; else if (e.evening.beer === false) ev += "B";
+        if (e.evening.salty === true) ev += "s"; else if (e.evening.salty === false) ev += "S";
+      }
+      var se = "";
+      if (e.session && e.session.sec){
+        se = b36(Math.round(e.session.sec));
+        if (e.session.rpe) se += "." + String(e.session.rpe).charAt(0);
+      }
+      out.push([b36(idx), lv, hb.toString(16), tm, w, ev, se].join(",").replace(/,+$/, ""));
+    }
+    return out.join("~");
+  }
+
+  function decodeDays(str){
+    var days = {};
+    if (!str || typeof str !== "string") return days;
+    var recs = str.split("~");
+    for (var i = 0; i < recs.length; i++){
+      if (!recs[i]) continue;
+      var p = recs[i].split(",");
+      var idx = parseInt(p[0], 36);
+      if (isNaN(idx)) continue;
+      var e = { level: LVLS[parseInt(p[1] || "0", 10)] || "", habits: {} };
+      var hb = parseInt(p[2] || "0", 16) || 0;
+      for (var j = 0; j < HABS.length; j++){ if (hb & (1 << j)) e.habits[HABS[j]] = true; }
+      if (p[3]) e.ts = START.getTime() + parseInt(p[3], 36) * 60000;
+      if (p[4]) e.waist = parseInt(p[4], 10);
+      if (p[5]){
+        e.evening = {};
+        if (p[5].indexOf("b") >= 0) e.evening.beer = true;
+        if (p[5].indexOf("B") >= 0) e.evening.beer = false;
+        if (p[5].indexOf("s") >= 0) e.evening.salty = true;
+        if (p[5].indexOf("S") >= 0) e.evening.salty = false;
+      }
+      if (p[6]){
+        var sp = p[6].split(".");
+        var sec = parseInt(sp[0], 36);
+        if (!isNaN(sec)){
+          e.session = { sec: sec };
+          if (sp[1]) e.session.rpe = RPE[sp[1]] || sp[1];
+        }
+      }
+      days[iso(addDays(START, idx))] = e;
+    }
+    return days;
+  }
+
   function remoteRead(){
     return fetch(REMOTE_URL, {cache:"no-store"})
-      .then(function(r){ return r.ok ? r.json() : null; })
-      .then(function(j){ return (j && j.data && j.data.days) ? j.data.days : null; });
+      .then(function(r){ if (!r.ok) throw new Error("сервер ответил " + r.status); return r.json(); })
+      .then(function(j){
+        var d = j && j.data;
+        if (!d) return null;
+        if (typeof d.v === "string") return decodeDays(d.v);
+        return d.days || null; // старый формат, если вдруг остался
+      });
   }
   function remoteWrite(days){
+    var body = JSON.stringify({ name: REMOTE_NAME, data: { v: encodeDays(days), updatedAt: new Date().toISOString() } });
     return fetch(REMOTE_URL, {
       method: "PUT",
       headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({ name: REMOTE_NAME, data: { days: days, updatedAt: new Date().toISOString() } })
-    }).then(function(r){ if (!r.ok) throw new Error("http " + r.status); });
+      body: body
+    }).then(function(r){
+      if (!r.ok) throw new Error("сервер ответил " + r.status + " на " + body.length + " байт");
+    });
   }
 
   function has(o, k){ return Object.prototype.hasOwnProperty.call(o, k); }
@@ -2432,9 +2531,9 @@
       var res = mergeRemote(remote);
       if (res.changed){ saveLocal(); render(); }
       if (res.pushUp) pushRemote();
-      else setSync("синхронизировано со всеми устройствами");
-    }).catch(function(){
-      setSync("нет связи — сохраняю на этом устройстве");
+      else setSync("синхронизировано со всеми устройствами", false);
+    }).catch(function(err){
+      setSync(String((err && err.message) || err), true);
     });
   }
 
